@@ -1,6 +1,6 @@
 {
   "evaluation": "historical-depeg-time-split-calibration",
-  "codeRevision": "4894e6970199e0aa6fb49f1caac667c3337319ac",
+  "publicArtifactVersion": "v1.1.0",
   "generatedAt": "2026-08-24T19:57:43.943Z",
   "design": {
     "samplingPeriod": "6h",

@@ -10,7 +10,8 @@ application.
 - a public-API historical calibration script;
 - pseudonymized out-of-fold risk labels and scores;
 - aggregate model metrics and uncertainty;
-- a synthetic constraint fixture expressed in normalized units; and
+- a synthetic constraint fixture expressed in normalized units;
+- selected standalone reference modules with unit tests; and
 - methodological limitations required to interpret the evidence.
 
 ## Deliberately excluded
@@ -22,7 +23,10 @@ application.
 - live protocols, positions, balances, APYs, or monetary allocation records;
 - hostnames, IP addresses, container details, deployment scripts, and backups;
 - Telegram configuration or subscriber information; and
-- the operational application's source tree and Git history.
+- the operational application's full source tree and Git history.
+
+The reference modules expose the thesis-relevant decision logic without the
+network signing, custody, user-management, database, or deployment layers.
 
 The pseudonymous identifiers in `data/risk-oof-scores.json` are arbitrary
 presentation labels. They do not provide a mapping back to operational records.

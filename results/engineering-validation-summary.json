@@ -1,0 +1,24 @@
+{
+  "evaluation": "isolated-engineering-validation",
+  "publicArtifactVersion": "v1.1.0",
+  "observedAt": "2026-08-24",
+  "applicationTests": {
+    "passed": 83,
+    "failed": 0,
+    "warnings": 2,
+    "skipped": 2
+  },
+  "browserAndSecurityChecks": {
+    "passed": 4,
+    "total": 4
+  },
+  "dependencyAudit": {
+    "knownVulnerabilitiesAtValidationTime": 0
+  },
+  "environment": "isolated validation environment",
+  "productionMutation": false,
+  "limitations": [
+    "This file reports sanitized aggregate outcomes; the operational test suite and deployment configuration are not published.",
+    "A passing test suite does not establish the absence of undiscovered defects or future dependency vulnerabilities."
+  ]
+}

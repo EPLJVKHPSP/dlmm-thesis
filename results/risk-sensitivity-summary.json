@@ -1,6 +1,6 @@
 {
   "evaluation": "risk-weight-and-tier-sensitivity",
-  "codeRevision": "741e818208c3e1d4adbc081ad21e28a1903e9f7e",
+  "publicArtifactVersion": "v1.1.0",
   "generatedAt": "2026-08-24T18:39:54.264Z",
   "baseWeights": {
     "my_rating": 0.55,

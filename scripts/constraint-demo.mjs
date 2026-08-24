@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { validateAllocation } from "../src/constrained-allocation.mjs";
 
 const budget = 100;
 const candidates = [
@@ -17,21 +18,7 @@ const limits = {
   tierBudgets: { 1: 1.00, 2: 0.75, 3: 0.30, 4: 0.10 },
 };
 
-const violations = [];
-const allocation = candidates.reduce((sum, row) => sum + row.allocation, 0);
-if (allocation !== budget) violations.push(`allocation ${allocation} does not equal budget ${budget}`);
-
-for (const row of candidates) {
-  if (row.allocation < limits.minimumAllocation) violations.push(`${row.id}: below minimum allocation`);
-  if (row.allocation > budget * limits.poolCaps[row.poolType]) violations.push(`${row.id}: pool cap exceeded`);
-  if (row.allocation > budget * limits.protocolCaps[row.tier]) violations.push(`${row.id}: protocol cap exceeded`);
-}
-
-for (const tier of [1, 2, 3, 4]) {
-  const tierAllocation = candidates.filter((row) => row.tier === tier)
-    .reduce((sum, row) => sum + row.allocation, 0);
-  if (tierAllocation > budget * limits.tierBudgets[tier]) violations.push(`tier ${tier}: budget exceeded`);
-}
+const { violations } = validateAllocation({ budget, candidates, limits });
 
 if (violations.length) throw new Error(`Constraint fixture failed: ${violations.join("; ")}`);
 

@@ -1,4 +1,3 @@
-import { execFileSync } from "node:child_process";
 import { resolve } from "node:path";
 
 export function argValue(name) {
@@ -6,12 +5,8 @@ export function argValue(name) {
   return process.argv.find((argument) => argument.startsWith(prefix))?.slice(prefix.length) ?? null;
 }
 
-export function codeRevision() {
-  try {
-    return execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
-  } catch {
-    return "uncommitted-public-artifact";
-  }
+export function artifactVersion() {
+  return "v1.1.0";
 }
 
 export function pathFromArgument(name, fallback) {

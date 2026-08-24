@@ -10,6 +10,7 @@ const risk = await json("../results/risk-calibration-summary.json");
 const sensitivity = await json("../results/risk-sensitivity-summary.json");
 const constraints = await json("../results/rebalance-constraint-summary.json");
 const synthetic = await json("../results/depeg-benchmark.json");
+const engineering = await json("../results/engineering-validation-summary.json");
 
 const checks = [
   [historical.sample.trainRows === 10565, "historical training rows"],
@@ -22,6 +23,8 @@ const checks = [
   [sensitivity.baseRecomputation.exactStoredScoreMatchPct === 1, "stored-score recomputation"],
   [constraints.passed === true && constraints.violationCount === 0, "constraint summary"],
   [synthetic.dataset.kind === "deterministic synthetic fixture", "synthetic benchmark labelled"],
+  [engineering.applicationTests.passed === 83 && engineering.applicationTests.failed === 0, "application test aggregate"],
+  [engineering.browserAndSecurityChecks.passed === engineering.browserAndSecurityChecks.total, "browser and security aggregate"],
 ];
 
 const failed = checks.filter(([passed]) => !passed).map(([, label]) => label);

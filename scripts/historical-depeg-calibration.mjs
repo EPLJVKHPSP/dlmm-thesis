@@ -2,7 +2,7 @@
 import { createHash } from "node:crypto";
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
-import { argValue, codeRevision } from "./common.mjs";
+import { argValue, artifactVersion } from "./common.mjs";
 
 const LABEL_PATH = resolve(argValue("labels") ?? "data/depeg-event-labels.json");
 const OUT_PATH = resolve(argValue("out") ?? "results/historical-depeg-calibration-rerun.json");
@@ -301,7 +301,7 @@ const selectedTierModel = [...tierModels].sort((a, b) => a.bic - b.bic)[0];
 const normalizedForHash = allRows.map((row) => [row.symbol, row.split, row.timestamp, row.price]);
 const report = {
   evaluation: "historical-depeg-time-split-calibration",
-  codeRevision: codeRevision(),
+  publicArtifactVersion: artifactVersion(),
   generatedAt: new Date().toISOString(),
   design: {
     samplingPeriod: labels.samplingPeriod,
