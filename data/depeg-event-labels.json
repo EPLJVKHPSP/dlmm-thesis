@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "targetPegUsd": 1,
+  "samplingPeriod": "6h",
+  "train": {
+    "start": "2022-01-01T00:00:00Z",
+    "end": "2023-01-01T00:00:00Z"
+  },
+  "test": {
+    "start": "2023-01-01T00:00:00Z",
+    "end": "2023-07-01T00:00:00Z"
+  },
+  "assets": [
+    { "symbol": "UST", "coin": "coingecko:terrausd", "splits": ["train"], "trainEnd": "2022-05-15T00:00:00Z" },
+    { "symbol": "USDT", "coin": "coingecko:tether" },
+    { "symbol": "USDC", "coin": "coingecko:usd-coin" },
+    { "symbol": "DAI", "coin": "coingecko:dai" },
+    { "symbol": "BUSD", "coin": "coingecko:binance-usd" },
+    { "symbol": "FRAX", "coin": "coingecko:frax" },
+    { "symbol": "TUSD", "coin": "coingecko:true-usd" },
+    { "symbol": "LUSD", "coin": "coingecko:liquity-usd" }
+  ],
+  "events": [
+    {
+      "id": "ust-collapse-2022",
+      "symbol": "UST",
+      "split": "train",
+      "onset": "2022-05-07T22:00:00Z",
+      "end": "2022-05-15T00:00:00Z",
+      "labelBasis": "Stanford SNAP identifies 7 May 2022 as the Terra-Luna shock onset; the terminal window is censored at 15 May because UST did not recover.",
+      "sources": [
+        "https://snap.stanford.edu/data/ERC20-stablecoins.html",
+        "https://www.bis.org/publ/work1146.pdf"
+      ]
+    },
+    {
+      "id": "usdt-stress-2022",
+      "symbol": "USDT",
+      "split": "train",
+      "onset": "2022-05-12T00:00:00Z",
+      "end": "2022-05-14T00:00:00Z",
+      "labelBasis": "Tether's dated issuer statement documents the redemption stress interval beginning 12 May 2022; the two-day window captures the temporary secondary-market dislocation.",
+      "sources": [
+        "https://tether.to/en/tether-continues-to-honour-all-redemptions-from-verified-customers-during-market-volatility-on-track-to-process-2bn-today/"
+      ]
+    },
+    {
+      "id": "usdc-svb-2023",
+      "symbol": "USDC",
+      "split": "test",
+      "onset": "2023-03-10T21:00:00Z",
+      "end": "2023-03-14T00:00:00Z",
+      "labelBasis": "The held-out window begins at the independently reported early-warning time and spans the SVB-related market dislocation through the return toward par.",
+      "sources": [
+        "https://arxiv.org/abs/2306.10612",
+        "https://www.circle.com/pressroom/3-3-billion-of-usdc-reserve-risk-removed-dollar-de-peg-closes",
+        "https://www.federalreserve.gov/econres/notes/feds-notes/in-the-shadow-of-bank-run-lessons-from-the-silicon-valley-bank-failure-and-its-impact-on-stablecoins-20251217.html"
+      ]
+    },
+    {
+      "id": "dai-usdc-contagion-2023",
+      "symbol": "DAI",
+      "split": "test",
+      "onset": "2023-03-11T00:00:00Z",
+      "end": "2023-03-14T00:00:00Z",
+      "labelBasis": "The held-out DAI window captures the documented USDC-collateral contagion during the SVB event.",
+      "sources": [
+        "https://www.ecb.europa.eu/pub/pdf/scpwps/ecb.wp3208~051a880042.en.pdf",
+        "https://arxiv.org/abs/2606.07442"
+      ]
+    }
+  ],
+  "priceSource": {
+    "provider": "DefiLlama Coins API",
+    "endpoint": "https://coins.llama.fi/chart/{coin}",
+    "documentation": "https://defillama.com/docs/api"
+  }
+}

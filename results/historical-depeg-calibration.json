@@ -1,0 +1,523 @@
+{
+  "evaluation": "historical-depeg-time-split-calibration",
+  "codeRevision": "4894e6970199e0aa6fb49f1caac667c3337319ac",
+  "generatedAt": "2026-08-24T19:57:43.943Z",
+  "design": {
+    "samplingPeriod": "6h",
+    "train": {
+      "start": "2022-01-01T00:00:00Z",
+      "end": "2023-01-01T00:00:00Z"
+    },
+    "test": {
+      "start": "2023-01-01T00:00:00Z",
+      "end": "2023-07-01T00:00:00Z"
+    },
+    "leakageControl": "Weights, alert threshold, and tier boundaries are selected only on the 2022 training period; 2023 USDC and DAI event windows are held out until final evaluation.",
+    "featureOrder": [
+      "current absolute peg deviation",
+      "24-hour mean absolute deviation",
+      "24-hour price volatility",
+      "6-hour downside momentum"
+    ],
+    "featureScaling": [
+      "3%",
+      "2%",
+      "2%",
+      "2%"
+    ],
+    "target": "Externally documented event-window membership; contemporaneous detector evaluation, not a causal forecast."
+  },
+  "sources": {
+    "price": {
+      "provider": "DefiLlama Coins API",
+      "endpoint": "https://coins.llama.fi/chart/{coin}",
+      "documentation": "https://defillama.com/docs/api"
+    },
+    "labels": [
+      {
+        "id": "ust-collapse-2022",
+        "symbol": "UST",
+        "split": "train",
+        "onset": "2022-05-07T22:00:00Z",
+        "end": "2022-05-15T00:00:00Z",
+        "labelBasis": "Stanford SNAP identifies 7 May 2022 as the Terra-Luna shock onset; the terminal window is censored at 15 May because UST did not recover.",
+        "sources": [
+          "https://snap.stanford.edu/data/ERC20-stablecoins.html",
+          "https://www.bis.org/publ/work1146.pdf"
+        ]
+      },
+      {
+        "id": "usdt-stress-2022",
+        "symbol": "USDT",
+        "split": "train",
+        "onset": "2022-05-12T00:00:00Z",
+        "end": "2022-05-14T00:00:00Z",
+        "labelBasis": "Tether's dated issuer statement documents the redemption stress interval beginning 12 May 2022; the two-day window captures the temporary secondary-market dislocation.",
+        "sources": [
+          "https://tether.to/en/tether-continues-to-honour-all-redemptions-from-verified-customers-during-market-volatility-on-track-to-process-2bn-today/"
+        ]
+      },
+      {
+        "id": "usdc-svb-2023",
+        "symbol": "USDC",
+        "split": "test",
+        "onset": "2023-03-10T21:00:00Z",
+        "end": "2023-03-14T00:00:00Z",
+        "labelBasis": "The held-out window begins at the independently reported early-warning time and spans the SVB-related market dislocation through the return toward par.",
+        "sources": [
+          "https://arxiv.org/abs/2306.10612",
+          "https://www.circle.com/pressroom/3-3-billion-of-usdc-reserve-risk-removed-dollar-de-peg-closes",
+          "https://www.federalreserve.gov/econres/notes/feds-notes/in-the-shadow-of-bank-run-lessons-from-the-silicon-valley-bank-failure-and-its-impact-on-stablecoins-20251217.html"
+        ]
+      },
+      {
+        "id": "dai-usdc-contagion-2023",
+        "symbol": "DAI",
+        "split": "test",
+        "onset": "2023-03-11T00:00:00Z",
+        "end": "2023-03-14T00:00:00Z",
+        "labelBasis": "The held-out DAI window captures the documented USDC-collateral contagion during the SVB event.",
+        "sources": [
+          "https://www.ecb.europa.eu/pub/pdf/scpwps/ecb.wp3208~051a880042.en.pdf",
+          "https://arxiv.org/abs/2606.07442"
+        ]
+      }
+    ],
+    "series": [
+      {
+        "symbol": "UST",
+        "coin": "coingecko:terrausd",
+        "split": "train",
+        "observations": 536,
+        "usableRows": 532
+      },
+      {
+        "symbol": "USDT",
+        "coin": "coingecko:tether",
+        "split": "train",
+        "observations": 1457,
+        "usableRows": 1417
+      },
+      {
+        "symbol": "USDT",
+        "coin": "coingecko:tether",
+        "split": "test",
+        "observations": 724,
+        "usableRows": 720
+      },
+      {
+        "symbol": "USDC",
+        "coin": "coingecko:usd-coin",
+        "split": "train",
+        "observations": 1460,
+        "usableRows": 1444
+      },
+      {
+        "symbol": "USDC",
+        "coin": "coingecko:usd-coin",
+        "split": "test",
+        "observations": 724,
+        "usableRows": 720
+      },
+      {
+        "symbol": "DAI",
+        "coin": "coingecko:dai",
+        "split": "train",
+        "observations": 1459,
+        "usableRows": 1443
+      },
+      {
+        "symbol": "DAI",
+        "coin": "coingecko:dai",
+        "split": "test",
+        "observations": 724,
+        "usableRows": 720
+      },
+      {
+        "symbol": "BUSD",
+        "coin": "coingecko:binance-usd",
+        "split": "train",
+        "observations": 1455,
+        "usableRows": 1415
+      },
+      {
+        "symbol": "BUSD",
+        "coin": "coingecko:binance-usd",
+        "split": "test",
+        "observations": 724,
+        "usableRows": 720
+      },
+      {
+        "symbol": "FRAX",
+        "coin": "coingecko:frax",
+        "split": "train",
+        "observations": 1458,
+        "usableRows": 1430
+      },
+      {
+        "symbol": "FRAX",
+        "coin": "coingecko:frax",
+        "split": "test",
+        "observations": 724,
+        "usableRows": 720
+      },
+      {
+        "symbol": "TUSD",
+        "coin": "coingecko:true-usd",
+        "split": "train",
+        "observations": 1460,
+        "usableRows": 1440
+      },
+      {
+        "symbol": "TUSD",
+        "coin": "coingecko:true-usd",
+        "split": "test",
+        "observations": 724,
+        "usableRows": 720
+      },
+      {
+        "symbol": "LUSD",
+        "coin": "coingecko:liquity-usd",
+        "split": "train",
+        "observations": 1460,
+        "usableRows": 1444
+      },
+      {
+        "symbol": "LUSD",
+        "coin": "coingecko:liquity-usd",
+        "split": "test",
+        "observations": 724,
+        "usableRows": 720
+      }
+    ],
+    "normalizedSampleSha256": "a956ea35c3036521af75ad05d02900f85a6da9bb116a212b728a51ba42c59f3c"
+  },
+  "sample": {
+    "trainRows": 10565,
+    "trainPositives": 35,
+    "testRows": 5040,
+    "testPositives": 25
+  },
+  "calibratedModel": {
+    "weights": {
+      "currentDeviation": 0.4,
+      "meanDeviation24h": 0.45,
+      "volatility24h": 0.15,
+      "downsideMomentum6h": 0
+    },
+    "alertThreshold": 0.95,
+    "trainConfusionMatrix": {
+      "tp": 20,
+      "fp": 2,
+      "tn": 10528,
+      "fn": 15
+    },
+    "trainMetrics": {
+      "precision": 0.9090909090909091,
+      "recall": 0.5714285714285714,
+      "specificity": 0.9998100664767331,
+      "balancedAccuracy": 0.7856193189526522,
+      "f1": 0.7017543859649122,
+      "falsePositiveRate": 0.0001899335232668566,
+      "rocAuc": 0.8848880748880749,
+      "averagePrecision": 0.5736982104546835
+    },
+    "testConfusionMatrix": {
+      "tp": 10,
+      "fp": 5,
+      "tn": 5010,
+      "fn": 15
+    },
+    "testMetrics": {
+      "precision": 0.6666666666666666,
+      "recall": 0.4,
+      "specificity": 0.9990029910269193,
+      "balancedAccuracy": 0.6995014955134596,
+      "f1": 0.5,
+      "falsePositiveRate": 0.0009970089730807576,
+      "rocAuc": 0.9728574277168495,
+      "averagePrecision": 0.5310334324710059
+    },
+    "trainEvents": {
+      "events": [
+        {
+          "eventId": "ust-collapse-2022",
+          "detected": true,
+          "firstAlertAt": "2022-05-09T23:58:42.000Z",
+          "latencyHours": 49.97833333333333,
+          "observations": 28
+        },
+        {
+          "eventId": "usdt-stress-2022",
+          "detected": false,
+          "firstAlertAt": null,
+          "latencyHours": null,
+          "observations": 7
+        }
+      ],
+      "eventRecall": 0.5,
+      "meanLatencyHours": 49.97833333333333,
+      "falseAlertEpisodes": 1
+    },
+    "testEvents": {
+      "events": [
+        {
+          "eventId": "usdc-svb-2023",
+          "detected": true,
+          "firstAlertAt": "2023-03-11T12:00:48.000Z",
+          "latencyHours": 15.013333333333334,
+          "observations": 13
+        },
+        {
+          "eventId": "dai-usdc-contagion-2023",
+          "detected": true,
+          "firstAlertAt": "2023-03-11T12:01:17.000Z",
+          "latencyHours": 12.02138888888889,
+          "observations": 12
+        }
+      ],
+      "eventRecall": 1,
+      "meanLatencyHours": 13.51736111111111,
+      "falseAlertEpisodes": 1
+    }
+  },
+  "tierComparison": [
+    {
+      "tierCount": 3,
+      "boundaries": [
+        0.05,
+        0.8500000000000001
+      ],
+      "trainingBic": 391.9840846660274,
+      "trainBins": [
+        {
+          "tier": 1,
+          "positives": 1,
+          "total": 5101,
+          "eventRate": 0.00019603999215840032
+        },
+        {
+          "tier": 2,
+          "positives": 14,
+          "total": 5128,
+          "eventRate": 0.002730109204368175
+        },
+        {
+          "tier": 3,
+          "positives": 20,
+          "total": 336,
+          "eventRate": 0.05952380952380952
+        }
+      ],
+      "testBins": [
+        {
+          "tier": 1,
+          "positives": 0,
+          "total": 3159,
+          "eventRate": 0
+        },
+        {
+          "tier": 2,
+          "positives": 12,
+          "total": 1860,
+          "eventRate": 0.0064516129032258064
+        },
+        {
+          "tier": 3,
+          "positives": 13,
+          "total": 21,
+          "eventRate": 0.6190476190476191
+        }
+      ]
+    },
+    {
+      "tierCount": 4,
+      "boundaries": [
+        0.05,
+        0.1,
+        0.8500000000000001
+      ],
+      "trainingBic": 400.84241012207127,
+      "trainBins": [
+        {
+          "tier": 1,
+          "positives": 1,
+          "total": 5101,
+          "eventRate": 0.00019603999215840032
+        },
+        {
+          "tier": 2,
+          "positives": 7,
+          "total": 3023,
+          "eventRate": 0.002315580549123387
+        },
+        {
+          "tier": 3,
+          "positives": 7,
+          "total": 2105,
+          "eventRate": 0.00332541567695962
+        },
+        {
+          "tier": 4,
+          "positives": 20,
+          "total": 336,
+          "eventRate": 0.05952380952380952
+        }
+      ],
+      "testBins": [
+        {
+          "tier": 1,
+          "positives": 0,
+          "total": 3159,
+          "eventRate": 0
+        },
+        {
+          "tier": 2,
+          "positives": 0,
+          "total": 832,
+          "eventRate": 0
+        },
+        {
+          "tier": 3,
+          "positives": 12,
+          "total": 1028,
+          "eventRate": 0.011673151750972763
+        },
+        {
+          "tier": 4,
+          "positives": 13,
+          "total": 21,
+          "eventRate": 0.6190476190476191
+        }
+      ]
+    },
+    {
+      "tierCount": 5,
+      "boundaries": [
+        0.05,
+        0.1,
+        0.8,
+        0.8500000000000001
+      ],
+      "trainingBic": 410.29233804054974,
+      "trainBins": [
+        {
+          "tier": 1,
+          "positives": 1,
+          "total": 5101,
+          "eventRate": 0.00019603999215840032
+        },
+        {
+          "tier": 2,
+          "positives": 7,
+          "total": 3023,
+          "eventRate": 0.002315580549123387
+        },
+        {
+          "tier": 3,
+          "positives": 7,
+          "total": 1987,
+          "eventRate": 0.0035228988424760945
+        },
+        {
+          "tier": 4,
+          "positives": 0,
+          "total": 118,
+          "eventRate": 0
+        },
+        {
+          "tier": 5,
+          "positives": 20,
+          "total": 336,
+          "eventRate": 0.05952380952380952
+        }
+      ],
+      "testBins": [
+        {
+          "tier": 1,
+          "positives": 0,
+          "total": 3159,
+          "eventRate": 0
+        },
+        {
+          "tier": 2,
+          "positives": 0,
+          "total": 832,
+          "eventRate": 0
+        },
+        {
+          "tier": 3,
+          "positives": 11,
+          "total": 1019,
+          "eventRate": 0.010794896957801767
+        },
+        {
+          "tier": 4,
+          "positives": 1,
+          "total": 9,
+          "eventRate": 0.1111111111111111
+        },
+        {
+          "tier": 5,
+          "positives": 13,
+          "total": 21,
+          "eventRate": 0.6190476190476191
+        }
+      ]
+    }
+  ],
+  "selectedTierModel": {
+    "tierCount": 3,
+    "boundaries": [
+      0.05,
+      0.8500000000000001
+    ],
+    "selectionRule": "Lowest training-period BIC among 3-, 4-, and 5-tier binomial calibration models; test data were not used for selection.",
+    "trainBins": [
+      {
+        "tier": 1,
+        "positives": 1,
+        "total": 5101,
+        "eventRate": 0.00019603999215840032
+      },
+      {
+        "tier": 2,
+        "positives": 14,
+        "total": 5128,
+        "eventRate": 0.002730109204368175
+      },
+      {
+        "tier": 3,
+        "positives": 20,
+        "total": 336,
+        "eventRate": 0.05952380952380952
+      }
+    ],
+    "testBins": [
+      {
+        "tier": 1,
+        "positives": 0,
+        "total": 3159,
+        "eventRate": 0
+      },
+      {
+        "tier": 2,
+        "positives": 12,
+        "total": 1860,
+        "eventRate": 0.0064516129032258064
+      },
+      {
+        "tier": 3,
+        "positives": 13,
+        "total": 21,
+        "eventRate": 0.6190476190476191
+      }
+    ]
+  },
+  "limitations": [
+    "Only four externally documented event windows are labelled: two training events and two held-out test events.",
+    "Six-hour aggregated prices cannot establish sub-hour alert latency and may smooth exchange-specific extremes.",
+    "The model is a contemporaneous depeg detector; it does not prove advance prediction before market prices move.",
+    "The calibrated depeg weights do not statistically identify the application's broader protocol/token/chain/pool policy weights."
+  ]
+}

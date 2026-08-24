@@ -1,0 +1,26 @@
+{
+  "evaluation": "sanitized-rebalance-constraint-summary",
+  "codeRevision": "741e818208c3e1d4adbc081ad21e28a1903e9f7e",
+  "generatedAt": "2026-08-24T18:39:54.455Z",
+  "proposal": {
+    "positionCount": 6,
+    "fullyAllocated": true
+  },
+  "constraints": {
+    "minimumRiskScore": 4,
+    "enforcedRuleFamilies": [
+      "minimum allocation",
+      "standalone pool cap",
+      "wrapper pool cap",
+      "underlying pool cap",
+      "per-protocol cap",
+      "tier budget"
+    ]
+  },
+  "violationCount": 0,
+  "passed": true,
+  "limitations": [
+    "This verifies proposal-time constraints and projected APY, not realized investment returns.",
+    "Realized outcomes require an execution timestamp, position marks, and a declared observation horizon."
+  ]
+}

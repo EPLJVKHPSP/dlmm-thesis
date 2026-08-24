@@ -1,0 +1,73 @@
+{
+  "evaluation": "depeg-detector-synthetic-benchmark",
+  "codeRevision": "741e818208c3e1d4adbc081ad21e28a1903e9f7e",
+  "generatedAt": "2026-08-24T18:39:53.746Z",
+  "dataset": {
+    "kind": "deterministic synthetic fixture",
+    "series": 5,
+    "samples": 240,
+    "labelledEpisodes": 3,
+    "intervalMinutes": 5
+  },
+  "parameters": {
+    "thresholdPct": 3,
+    "minConfidence": 0.5
+  },
+  "confusionMatrix": {
+    "truePositives": 3,
+    "falsePositives": 1,
+    "falseNegatives": 0
+  },
+  "metrics": {
+    "precision": 0.75,
+    "recall": 1,
+    "f1": 0.8571428571428571,
+    "falseAlerts": 1,
+    "meanDetectionLatencyMinutes": 3.3333333333333335,
+    "maxDetectionLatencyMinutes": 10
+  },
+  "predictedEpisodes": [
+    {
+      "key": "boundary",
+      "onsetAt": "2026-01-01T02:40:00.000Z",
+      "recoveryAt": "2026-01-01T02:55:00.000Z"
+    },
+    {
+      "key": "noise-spike",
+      "onsetAt": "2026-01-01T01:30:00.000Z",
+      "recoveryAt": "2026-01-01T01:35:00.000Z"
+    },
+    {
+      "key": "true-a",
+      "onsetAt": "2026-01-01T00:50:00.000Z",
+      "recoveryAt": "2026-01-01T01:20:00.000Z"
+    },
+    {
+      "key": "true-b",
+      "onsetAt": "2026-01-01T02:10:00.000Z",
+      "recoveryAt": "2026-01-01T02:35:00.000Z"
+    }
+  ],
+  "groundTruth": [
+    {
+      "key": "true-a",
+      "onsetAt": "2026-01-01T00:50:00.000Z",
+      "recoveryAt": "2026-01-01T01:20:00.000Z"
+    },
+    {
+      "key": "true-b",
+      "onsetAt": "2026-01-01T02:00:00.000Z",
+      "recoveryAt": "2026-01-01T02:35:00.000Z"
+    },
+    {
+      "key": "boundary",
+      "onsetAt": "2026-01-01T02:40:00.000Z",
+      "recoveryAt": "2026-01-01T02:55:00.000Z"
+    }
+  ],
+  "limitations": [
+    "Synthetic fixtures validate deterministic behavior, not real-market detection accuracy.",
+    "The single-sample detector intentionally flags the injected one-sample noise spike.",
+    "Real precision and recall require independently sourced historical labels."
+  ]
+}

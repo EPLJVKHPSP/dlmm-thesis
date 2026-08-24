@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "description": "Pseudonymized leave-one-protocol-out scores. Identifiers are arbitrary and do not map publicly to operational records.",
+  "records": [
+    {
+      "unitId": "protocol-01",
+      "label": 1,
+      "score": 0.35616666666666674
+    },
+    {
+      "unitId": "protocol-02",
+      "label": 0,
+      "score": 0.2134999999999999
+    },
+    {
+      "unitId": "protocol-03",
+      "label": 0,
+      "score": 0.21400000000000008
+    },
+    {
+      "unitId": "protocol-04",
+      "label": 0,
+      "score": 0.2340000000000001
+    },
+    {
+      "unitId": "protocol-05",
+      "label": 0,
+      "score": 0.32866129032258073
+    },
+    {
+      "unitId": "protocol-06",
+      "label": 1,
+      "score": 0.311825
+    },
+    {
+      "unitId": "protocol-07",
+      "label": 0,
+      "score": 0.13249999999999995
+    },
+    {
+      "unitId": "protocol-08",
+      "label": 0,
+      "score": 0.243
+    },
+    {
+      "unitId": "protocol-09",
+      "label": 0,
+      "score": 0.3341249999999999
+    },
+    {
+      "unitId": "protocol-10",
+      "label": 0,
+      "score": 0.2340000000000001
+    },
+    {
+      "unitId": "protocol-11",
+      "label": 0,
+      "score": 0.2290000000000001
+    },
+    {
+      "unitId": "protocol-12",
+      "label": 0,
+      "score": 0.08374999999999999
+    },
+    {
+      "unitId": "protocol-13",
+      "label": 0,
+      "score": 0.5
+    },
+    {
+      "unitId": "protocol-14",
+      "label": 0,
+      "score": 0.45399999999999996
+    },
+    {
+      "unitId": "protocol-15",
+      "label": 0,
+      "score": 0.4
+    },
+    {
+      "unitId": "protocol-16",
+      "label": 0,
+      "score": 0.29799999999999993
+    },
+    {
+      "unitId": "protocol-17",
+      "label": 0,
+      "score": 0.18374999999999997
+    },
+    {
+      "unitId": "protocol-18",
+      "label": 0,
+      "score": 0.47
+    },
+    {
+      "unitId": "protocol-19",
+      "label": 0,
+      "score": 0.22575
+    },
+    {
+      "unitId": "protocol-20",
+      "label": 0,
+      "score": 0.3319871794871796
+    },
+    {
+      "unitId": "protocol-21",
+      "label": 1,
+      "score": 0.4195
+    },
+    {
+      "unitId": "protocol-22",
+      "label": 1,
+      "score": 0.3590000000000001
+    },
+    {
+      "unitId": "protocol-23",
+      "label": 1,
+      "score": 0.2955
+    },
+    {
+      "unitId": "protocol-24",
+      "label": 0,
+      "score": 0.3491875
+    }
+  ]
+}

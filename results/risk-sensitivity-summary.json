@@ -1,0 +1,152 @@
+{
+  "evaluation": "risk-weight-and-tier-sensitivity",
+  "codeRevision": "741e818208c3e1d4adbc081ad21e28a1903e9f7e",
+  "generatedAt": "2026-08-24T18:39:54.264Z",
+  "baseWeights": {
+    "my_rating": 0.55,
+    "ext_hindenrank": 0.2,
+    "ext_tokeninsight": 0.15,
+    "ext_rekt": 0.1
+  },
+  "sample": {
+    "scoredYields": 170,
+    "incidentProtocols": 18,
+    "incidentLabelledYields": 53,
+    "nonIncidentYields": 117
+  },
+  "baseRecomputation": {
+    "exactStoredScoreMatches": 170,
+    "exactStoredScoreMatchPct": 1
+  },
+  "sensitivity": [
+    {
+      "scenario": "my_rating_minus_20pct",
+      "weights": {
+        "my_rating": 0.44000000000000006,
+        "ext_hindenrank": 0.2,
+        "ext_tokeninsight": 0.15,
+        "ext_rekt": 0.1
+      },
+      "spearmanRankCorrelation": 0.9818079421533559,
+      "scoreChanges": 9,
+      "scoreChangePct": 0.052941176470588235,
+      "tierChanges": 1,
+      "tierChangePct": 0.0058823529411764705,
+      "meanAbsoluteScoreChange": 0.052941176470588235
+    },
+    {
+      "scenario": "my_rating_plus_20pct",
+      "weights": {
+        "my_rating": 0.66,
+        "ext_hindenrank": 0.2,
+        "ext_tokeninsight": 0.15,
+        "ext_rekt": 0.1
+      },
+      "spearmanRankCorrelation": 0.9778062129630668,
+      "scoreChanges": 6,
+      "scoreChangePct": 0.03529411764705882,
+      "tierChanges": 4,
+      "tierChangePct": 0.023529411764705882,
+      "meanAbsoluteScoreChange": 0.03529411764705882
+    },
+    {
+      "scenario": "ext_hindenrank_minus_20pct",
+      "weights": {
+        "my_rating": 0.55,
+        "ext_hindenrank": 0.16000000000000003,
+        "ext_tokeninsight": 0.15,
+        "ext_rekt": 0.1
+      },
+      "spearmanRankCorrelation": 0.9924894175750452,
+      "scoreChanges": 3,
+      "scoreChangePct": 0.01764705882352941,
+      "tierChanges": 0,
+      "tierChangePct": 0,
+      "meanAbsoluteScoreChange": 0.01764705882352941
+    },
+    {
+      "scenario": "ext_hindenrank_plus_20pct",
+      "weights": {
+        "my_rating": 0.55,
+        "ext_hindenrank": 0.24,
+        "ext_tokeninsight": 0.15,
+        "ext_rekt": 0.1
+      },
+      "spearmanRankCorrelation": 0.9831275707075773,
+      "scoreChanges": 5,
+      "scoreChangePct": 0.029411764705882353,
+      "tierChanges": 3,
+      "tierChangePct": 0.01764705882352941,
+      "meanAbsoluteScoreChange": 0.029411764705882353
+    },
+    {
+      "scenario": "ext_tokeninsight_minus_20pct",
+      "weights": {
+        "my_rating": 0.55,
+        "ext_hindenrank": 0.2,
+        "ext_tokeninsight": 0.12,
+        "ext_rekt": 0.1
+      },
+      "spearmanRankCorrelation": 0.9778062129630668,
+      "scoreChanges": 6,
+      "scoreChangePct": 0.03529411764705882,
+      "tierChanges": 4,
+      "tierChangePct": 0.023529411764705882,
+      "meanAbsoluteScoreChange": 0.03529411764705882
+    },
+    {
+      "scenario": "ext_tokeninsight_plus_20pct",
+      "weights": {
+        "my_rating": 0.55,
+        "ext_hindenrank": 0.2,
+        "ext_tokeninsight": 0.18,
+        "ext_rekt": 0.1
+      },
+      "spearmanRankCorrelation": 0.9889665347902632,
+      "scoreChanges": 10,
+      "scoreChangePct": 0.058823529411764705,
+      "tierChanges": 0,
+      "tierChangePct": 0,
+      "meanAbsoluteScoreChange": 0.058823529411764705
+    },
+    {
+      "scenario": "ext_rekt_minus_20pct",
+      "weights": {
+        "my_rating": 0.55,
+        "ext_hindenrank": 0.2,
+        "ext_tokeninsight": 0.15,
+        "ext_rekt": 0.08000000000000002
+      },
+      "spearmanRankCorrelation": 0.9722734395085104,
+      "scoreChanges": 8,
+      "scoreChangePct": 0.047058823529411764,
+      "tierChanges": 5,
+      "tierChangePct": 0.029411764705882353,
+      "meanAbsoluteScoreChange": 0.047058823529411764
+    },
+    {
+      "scenario": "ext_rekt_plus_20pct",
+      "weights": {
+        "my_rating": 0.55,
+        "ext_hindenrank": 0.2,
+        "ext_tokeninsight": 0.15,
+        "ext_rekt": 0.12
+      },
+      "spearmanRankCorrelation": 0.9898925644337281,
+      "scoreChanges": 3,
+      "scoreChangePct": 0.01764705882352941,
+      "tierChanges": 1,
+      "tierChangePct": 0.0058823529411764705,
+      "meanAbsoluteScoreChange": 0.01764705882352941
+    }
+  ],
+  "incidentCrossSection": {
+    "lowerScorePredictsIncidentAuc": 0.4816158684083212,
+    "interpretation": "0.5 is chance; values above 0.5 mean incident-associated protocols tend to have lower safety scores."
+  },
+  "limitations": [
+    "One-at-a-time ±20% policy perturbations are sensitivity analysis, not statistical calibration.",
+    "Incident labels are protocol-level historical associations and do not establish causality.",
+    "The sample is cross-sectional and project-specific; realized loss severity is not modelled."
+  ]
+}

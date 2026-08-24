@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+message: "If you use this research artifact, please cite the thesis and this repository."
+title: "DLMM Thesis Evidence"
+type: software
+authors:
+  - family-names: "Alimbaev"
+    given-names: "Arslan"
+year: 2026

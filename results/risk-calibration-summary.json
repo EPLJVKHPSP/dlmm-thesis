@@ -1,0 +1,146 @@
+{
+  "evaluation": "protocol-incident-risk-weight-calibration",
+  "codeRevision": "4894e6970199e0aa6fb49f1caac667c3337319ac",
+  "generatedAt": "2026-08-24T19:57:50.243Z",
+  "design": {
+    "unit": "protocol",
+    "outcome": "at least one dated incident in the research incident registry",
+    "features": [
+      "current internal rating",
+      "current Hindenrank rating",
+      "current TokenInsight rating"
+    ],
+    "excludedFeature": "Rekt incident sub-score is excluded because it is directly constructed from the outcome and would leak the label.",
+    "validation": "leave-one-protocol-out cross-validation",
+    "weightGridStep": 0.05
+  },
+  "sample": {
+    "protocols": 24,
+    "incidentProtocols": 5,
+    "nonIncidentProtocols": 19,
+    "incidents": 12
+  },
+  "originalLeakageSafeWeights": {
+    "internalRating": 0.6111111111111112,
+    "hindenrank": 0.22222222222222224,
+    "tokenInsight": 0.16666666666666666,
+    "protocolLevelRocAuc": 0.20526315789473684,
+    "protocolLevelAveragePrecision": 0.16205533596837945
+  },
+  "calibratedWeights": {
+    "internalRating": 0.05,
+    "hindenrank": 0.6,
+    "tokenInsight": 0.35,
+    "descriptiveInSampleRocAuc": 0.8210526315789474,
+    "descriptiveInSampleAveragePrecision": 0.5597979797979797
+  },
+  "crossValidation": {
+    "rocAuc": 0.7052631578947368,
+    "averagePrecision": 0.3404761904761905,
+    "rocAucBootstrap95": {
+      "iterations": 1998,
+      "lower95": 0.48739495798319327,
+      "upper95": 0.9074074074074074
+    }
+  },
+  "tierComparison": [
+    {
+      "tierCount": 2,
+      "boundaries": [
+        0.26925
+      ],
+      "bic": 25.541180306954466,
+      "bins": [
+        {
+          "tier": 1,
+          "protocols": 10,
+          "incidentProtocols": 0,
+          "smoothedIncidentRate": 0.045454545454545456
+        },
+        {
+          "tier": 2,
+          "protocols": 14,
+          "incidentProtocols": 5,
+          "smoothedIncidentRate": 0.36666666666666664
+        }
+      ]
+    },
+    {
+      "tierCount": 3,
+      "boundaries": [
+        0.26925,
+        0.352677085
+      ],
+      "bic": 28.427084135713827,
+      "bins": [
+        {
+          "tier": 1,
+          "protocols": 10,
+          "incidentProtocols": 0,
+          "smoothedIncidentRate": 0.045454545454545456
+        },
+        {
+          "tier": 2,
+          "protocols": 7,
+          "incidentProtocols": 2,
+          "smoothedIncidentRate": 0.3125
+        },
+        {
+          "tier": 3,
+          "protocols": 7,
+          "incidentProtocols": 3,
+          "smoothedIncidentRate": 0.4375
+        }
+      ]
+    },
+    {
+      "tierCount": 4,
+      "boundaries": [
+        0.2315,
+        0.26925,
+        0.352677085
+      ],
+      "bic": 32.379465305037044,
+      "bins": [
+        {
+          "tier": 1,
+          "protocols": 7,
+          "incidentProtocols": 0,
+          "smoothedIncidentRate": 0.0625
+        },
+        {
+          "tier": 2,
+          "protocols": 3,
+          "incidentProtocols": 0,
+          "smoothedIncidentRate": 0.125
+        },
+        {
+          "tier": 3,
+          "protocols": 7,
+          "incidentProtocols": 2,
+          "smoothedIncidentRate": 0.3125
+        },
+        {
+          "tier": 4,
+          "protocols": 7,
+          "incidentProtocols": 3,
+          "smoothedIncidentRate": 0.4375
+        }
+      ]
+    }
+  ],
+  "selectedTierModel": {
+    "tierCount": 2,
+    "boundaries": [
+      0.26925
+    ],
+    "bic": 25.541180306954466,
+    "selectionRule": "Lowest BIC among monotonic 2-, 3-, and 4-tier models with at least three protocols per tier, using out-of-fold risk scores."
+  },
+  "limitations": [
+    "The 24-protocol sample contains only five incident-associated protocols, so uncertainty is large.",
+    "Ratings are current snapshots measured after some incidents; the analysis is out-of-protocol but not time-ordered and cannot establish prospective prediction.",
+    "Matched incident records are associations, not adjudicated causal loss labels for each yield.",
+    "The result is evidence for revising or simplifying policy weights, not authority for an automatic production change."
+  ]
+}

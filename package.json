@@ -1,0 +1,14 @@
+{
+  "name": "dlmm-thesis-evidence",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Presentation-safe empirical evidence for a DeFi security thesis",
+  "type": "module",
+  "scripts": {
+    "test": "node scripts/verify-results.mjs && node scripts/risk-validation.mjs && node scripts/constraint-demo.mjs",
+    "study:depeg": "node scripts/historical-depeg-calibration.mjs --out=results/historical-depeg-calibration-rerun.json"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
