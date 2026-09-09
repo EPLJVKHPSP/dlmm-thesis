@@ -1,32 +1,30 @@
 # Public disclosure boundary
 
-This repository was assembled as a clean public research artifact. It was
-created from an empty Git history rather than forked from the operational
-application.
+This repository is designed for public inspection and academic presentation.
 
 ## Included
 
+- the DLMM dashboard and its authenticated server routes;
+- a relational review schema with reference seed records;
 - public stablecoin event labels and source URLs;
 - a public-API historical calibration script;
 - pseudonymized out-of-fold risk labels and scores;
-- aggregate model metrics and uncertainty;
-- a synthetic constraint fixture expressed in normalized units;
-- selected standalone reference modules with unit tests; and
-- methodological limitations required to interpret the evidence.
+- aggregate metrics and their stated uncertainty;
+- a $9,000,000 allocation scenario with $100,000–$5,000,000 position bounds;
+- decision-logic modules and automated tests; and
+- methodological limitations needed to interpret the results.
 
-## Deliberately excluded
+## Not included
 
-- environment files, keys, passwords, tokens, cookies, or connection strings;
-- production or validation database dumps;
-- users, logins, sessions, or authorization records;
-- wallet addresses, transaction hashes, account identifiers, or holdings;
-- live protocols, positions, balances, APYs, or monetary allocation records;
-- hostnames, IP addresses, container details, deployment scripts, and backups;
-- Telegram configuration or subscriber information; and
-- the operational application's full source tree and Git history.
+- private keys, seed phrases, API tokens, cookies, or real connection strings;
+- real user accounts, login records, wallet addresses, or transaction hashes;
+- real positions, balances, APYs, holdings, or allocation instructions;
+- transaction construction, wallet connection, signing, or broadcasting;
+- notification credentials or subscriber information; or
+- server addresses, backups, operational databases, and deployment secrets.
 
-The reference modules expose the thesis-relevant decision logic without the
-network signing, custody, user-management, database, or deployment layers.
-
-The pseudonymous identifiers in `data/risk-oof-scores.json` are arbitrary
-presentation labels. They do not provide a mapping back to operational records.
+The protocol names identify public DeFi systems. The treasury identifier and
+currency values belong only to the review scenario; they do not describe the
+author's or any user's holdings. Pseudonymous research units in
+`data/risk-oof-scores.json` are arbitrary analysis labels and have no mapping to
+users, wallets, or operational records.

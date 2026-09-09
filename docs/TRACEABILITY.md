@@ -1,13 +1,13 @@
 # Research traceability
 
-| Thesis question | Public implementation or method | Public evidence |
+| Thesis question | Implementation or method | Evidence available to the reviewer |
 |---|---|---|
-| RQ1: secure integrated architecture | `docs/SYSTEM.md`; `src/depeg-monitor.mjs`; `src/composite-risk.mjs`; `src/constrained-allocation.mjs` | Unit tests in `tests/`; aggregate engineering summary |
-| RQ2: monitoring effectiveness | Historical method and `scripts/historical-depeg-calibration.mjs` | Event labels and `results/historical-depeg-calibration.json` |
-| RQ3: reproducibility and operational correctness | `scripts/verify-results.mjs`; deterministic unit tests | `npm test`; `results/engineering-validation-summary.json` |
-| RQ4: defensible risk weights and tiers | Leakage-controlled method and `scripts/risk-validation.mjs` | Pseudonymized scores, calibration summary, and sensitivity summary |
-| RQ5: allocation-rule enforcement | `src/constrained-allocation.mjs`; synthetic fixture | Constraint summary and executable tests |
+| RQ1: How can monitoring, risk assessment, notifications, and allocation support be integrated? | `src/app/`, authenticated routes, `src/lib/data-repository.ts`, and `docs/SYSTEM.md` | Working Dashboard, Positions, activity-specific operations pages, Lending Health, Strategies, Notifications, and Evaluation pages; application build |
+| RQ2: How effectively does the depeg method identify documented instability? | `src/depeg-monitor.mjs` and `scripts/historical-depeg-calibration.mjs` | Event labels, held-out result file, state-machine tests, and Depeg monitor page |
+| RQ3: How can position and protocol risk be expressed transparently? | `src/composite-risk.mjs`, `src/protocol-risk.mjs`, and Ratings page | Per-component contributions, tests, pseudonymized out-of-fold scores, calibration and sensitivity summaries |
+| RQ4: How can an allocation proposal be kept within explicit limits? | `src/constrained-allocation.mjs` and `/api/rebalance` | Interactive $1,000,000 proposal, a $9,000,000 portfolio scenario, $100,000–$5,000,000 position bounds, and automated constraint tests |
+| RQ5: Which controls reduce security and privacy exposure in the integrated design? | Signed session, fixed-ID API, optional parameterized database access, and absence of transaction capabilities | Login/logout flow, health response reporting `transactionsEnabled: false`, source inspection, tests, and `PRIVACY.md` |
 
-The mapping is intentionally limited to claims made in the thesis. Operational
-configuration and records are excluded under `PRIVACY.md`, and quantitative
-claims retain the limitations stated in `docs/RESULTS.md`.
+The mapping connects every claim to something the examiner can run, inspect, or
+recompute. Quantitative claims retain the limitations stated in
+`docs/RESULTS.md`.

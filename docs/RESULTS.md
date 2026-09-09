@@ -27,10 +27,11 @@ unavailable, this evaluation is out-of-protocol rather than time-ordered.
 
 ## Constraint evidence
 
-The sanitized archived summary records six proposed positions, full allocation,
+The published constraint summary records six proposed positions, full allocation,
 all declared cap-rule families checked, zero violations, and a passing result.
-The public executable example uses only synthetic normalized units. Neither
-artifact supports a claim about realized investment returns.
+The companion application also checks four positions totalling $9,000,000
+against a $10,000,000 capital base. Position values range from $100,000 to
+$5,000,000. Neither artifact supports a claim about realized investment returns.
 
 ## Main limitations
 

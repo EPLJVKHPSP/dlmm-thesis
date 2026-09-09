@@ -1,12 +1,31 @@
 {
-  "name": "dlmm-thesis-evidence",
-  "version": "1.1.0",
+  "name": "dlmm-thesis",
+  "version": "1.2.0",
   "private": true,
-  "description": "Presentation-safe empirical evidence for a DeFi security thesis",
+  "description": "DLMM thesis application and empirical evidence",
   "type": "module",
   "scripts": {
-    "test": "node --test tests/*.test.mjs && node scripts/verify-results.mjs && node scripts/risk-validation.mjs && node scripts/constraint-demo.mjs",
+    "dev": "next dev",
+    "build": "next build && node scripts/prepare-standalone.mjs",
+    "start": "node .next/standalone/server.js",
+    "test": "node --test tests/*.test.mjs && node scripts/verify-results.mjs && node scripts/risk-validation.mjs && node scripts/allocation-check.mjs",
+    "check": "npm test && npm run build",
+    "reproduce": "npm test",
     "study:depeg": "node scripts/historical-depeg-calibration.mjs --out=results/historical-depeg-calibration-rerun.json"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "next": "16.3.4",
+    "postgres": "^3.4.9",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "recharts": "^3.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.9.0"
   },
   "engines": {
     "node": ">=20"

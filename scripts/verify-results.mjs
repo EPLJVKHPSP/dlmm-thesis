@@ -30,4 +30,4 @@ const checks = [
 const failed = checks.filter(([passed]) => !passed).map(([, label]) => label);
 if (failed.length) throw new Error(`Evidence verification failed: ${failed.join(", ")}`);
 
-console.log("PASS archived evidence", JSON.stringify({ checks: checks.length, failed: 0 }));
+console.log("PASS published evidence", JSON.stringify({ checks: checks.length, failed: 0 }));
