@@ -1,113 +1,244 @@
-# DLMM — Thesis Companion
+# DLMM Thesis Companion
 
-This repository is the reviewable companion application for the thesis
-**“Aspects of Security in Decentralized Finance: Design and Evaluation of an
-Integrated Monitoring and Risk-Allocation System.”** It combines the working
-DLMM interface, authenticated server routes, a relational review schema, the core decision
-logic, automated tests, and the quantitative evaluation artifacts discussed in
-the paper.
+This repository contains the reviewer-facing companion application for the
+thesis *A DeFi Decision Support System for Risk Monitoring and Capital
+Allocation Across Liquidity Pools*.
 
-The interface uses DLMM's own logo, navigation grouping, light and dark design
-tokens, spacing, cards, tables, badges, and responsive shell from the supplied
-application project.
+The application provides a reproducible demonstration of position monitoring,
+lending health, depeg monitoring, protocol ratings, strategy research,
+performance reporting, activity-specific position records, and constrained
+rebalancing. The thesis is the authoritative source for the research
+methodology, equations, empirical design, results, and limitations. This README
+only explains how to install, run, inspect, and verify the repository.
 
-The application presents a $10,000,000 treasury scenario across Aave V3, Kamino
-Lend, Lido, and Curve. Recorded positions range from $100,000 to $5,000,000.
-The public repository contains no real account, wallet address, holding, or
-transaction record and cannot connect a wallet, sign a transaction, or move funds.
+## Requirements
 
-## Run the application
+- Node.js 20 or later
+- npm
+- Internet access for installation and optional live DefiLlama checks
+- Docker only when using the PostgreSQL-backed configuration
+- A reviewer-created Telegram bot only when testing Telegram delivery
 
-Node.js 20 or later is required.
+## Start the application
+
+From the repository root:
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open `http://localhost:3000` and use:
+Open `http://localhost:3000` and sign in with:
 
 - Login: `reviewer@dlmm.local`
 - Password: `review-access`
 
-The application starts with its bundled reference snapshot. PostgreSQL is
-optional, so the presentation does not depend on a database service.
+The application uses its bundled review snapshot by default, so PostgreSQL is
+not required for the normal walkthrough.
 
-For the database-backed version:
+## Application walkthrough
+
+The review scenario represents a fictional $10,000,000 treasury: $9,000,000
+deployed across Aave V3, Kamino Lend, Lido, and Curve, plus $1,000,000 idle
+USDC. It contains no real wallet, holding, account, or transaction record.
+
+The main screens are:
+
+- **Dashboard**: NAV, deployed and idle capital, strategy table, performance
+  history, activity exposure, portfolio composition, and lending health.
+- **Positions**: the complete lending, borrowing, staking, and farming ledger.
+- **MM Performance** and **Assessment Period**: expected income, borrowing
+  costs, NAV history, and assessment-period records.
+- **Select**, **Idle Assets**, **Liquidity Optimization**, **Preview**, and
+  **Execute**: a guided advisory rebalance flow. It never signs or submits a
+  transaction.
+- **Lending Health**: fund-level and per-protocol borrowing limits and
+  liquidation thresholds.
+- **Depeg Monitor**: the current held-asset monitoring scope for USDC, DAI, and
+  stETH.
+- **Strategies** and **Ratings**: filterable opportunity and protocol views.
+- **Staking**, **Farming**, **Lending**, and **Borrowing**: activity-specific
+  tables and position-entry forms. New entries remain in the browser session.
+
+## Replay historical real events
+
+The recommended reviewer demonstration uses the frozen DefiLlama observations
+included in the repository:
+
+```bash
+npm run episodes:depeg -- --offline
+```
+
+This command does not require the application server, PostgreSQL, Telegram
+credentials, or internet access. It replays the application monitor's shared
+depeg classifier over the selected UST, USDC, and DAI event observations and
+checks the output against the published evidence.
+
+Expected result:
+
+```text
+PASS UST ust-collapse-2022 - opened ...; no recovery
+PASS USDC usdc-svb-2023 - opened ...; recovered ...
+PASS DAI dai-usdc-contagion-2023 - opened ...; recovered ...
+DONE exact monitor replay - 3/3 expected outcomes passed
+```
+
+To request the event observations from DefiLlama again instead of using the
+frozen snapshot:
+
+```bash
+npm run episodes:depeg
+```
+
+The online command requires internet access and may take longer. The historical
+replay tests the monitor's decision behavior; it does not send Telegram
+messages and does not claim advance prediction. Full methodology and
+interpretation are documented in the thesis.
+
+## Configure Telegram notifications
+
+Telegram support is optional. Without credentials, the monitor remains dormant
+and the rest of the application continues to work.
+
+Create a reviewer-owned bot:
+
+1. Message `@BotFather` in Telegram and run `/newbot`.
+2. Copy the bot token.
+3. Open the new bot and press **Start**.
+4. Obtain the reviewer's chat ID, for example from `@userinfobot`.
+5. Supply the values through environment variables. Never save a real token in
+   the repository.
+
+Test the three documented example messages:
+
+```bash
+BOT_TOKEN=<token> TELEGRAM_CHAT_IDS=<chat-id> npm run alert:examples
+```
+
+The reviewer should receive, in order:
+
+1. A connection test.
+2. A USDC depeg-opened example.
+3. A USDC recovery example.
+
+There should be no fourth message because continuing active observations are
+silent.
+
+Run one live held-asset check:
+
+```bash
+BOT_TOKEN=<token> TELEGRAM_CHAT_IDS=<chat-id> npm run monitor:telegram:once
+```
+
+Run continuous monitoring:
+
+```bash
+BOT_TOKEN=<token> TELEGRAM_CHAT_IDS=<chat-id> npm run monitor:telegram
+```
+
+The worker checks only held, non-demo assets. USDC and DAI are compared with
+USD, while stETH is compared with ETH. It sends only depeg-opened and recovery
+transitions. It does not send strategy-optimization or rebalance messages.
+
+The default polling interval is 60 seconds. It can be changed with
+`TELEGRAM_POLL_SECONDS`, with a minimum of 15 seconds. When PostgreSQL is
+configured, the last monitoring state survives worker restarts.
+
+## Run with Docker and PostgreSQL
 
 ```bash
 docker compose up --build
 ```
 
-The same URL and credentials apply. The container initializes PostgreSQL with
-the same review records from `db/001_thesis.sql`.
+Open `http://localhost:3000` and use the same reviewer credentials. Docker
+starts PostgreSQL, the application, and the Telegram worker. The worker remains
+dormant unless `BOT_TOKEN` and `TELEGRAM_CHAT_IDS` are provided in the
+environment.
 
-## What can be presented
-
-- an authenticated, production-style dashboard with NAV, strategy, portfolio,
-  and activity-allocation charts;
-- dedicated lending, borrowing, staking, and farming pages with position tables
-  and creation forms;
-- fund-level and protocol-level lending-health rulers;
-- strategy and protocol-rating lists using real protocol names;
-- a constrained rebalancing proposal and depeg-monitor workflow; and
-- a separate Evaluation page for the empirical depeg, risk-calibration, and
-  constraint results discussed in the thesis.
-
-The recommended presentation route is in `docs/PRESENTATION.md`.
-
-## Verify the implementation and evidence
+## Verification commands
 
 ```bash
+npm test
 npm run check
+npm run reproduce
 ```
 
-This runs the decision-logic tests, recomputes the published evidence checks,
-validates the risk metrics and allocation constraints, and creates a production
-build of the application.
+- `npm test` runs the unit tests, published-evidence checks, risk validation,
+  allocation checks, and the offline real-event replay.
+- `npm run check` runs the complete test set and creates a production build.
+- `npm run reproduce` recomputes the offline evidence without a separate manual
+  build step.
 
-For a shorter offline recomputation of the published checks without rebuilding
-the interface, run `npm run reproduce`.
+Additional commands:
 
-The historical depeg study can also be rerun against the public DefiLlama Coins
-API:
+| Command | Purpose |
+|---|---|
+| `npm run dev` | Start the local interface with development reloads |
+| `npm run build` | Create the standalone production build |
+| `npm start` | Start the previously built standalone application |
+| `npm run episodes:depeg -- --offline` | Replay the three frozen real-event series |
+| `npm run episodes:depeg` | Fetch and replay the selected event windows from DefiLlama |
+| `npm run study:depeg` | Rerun the supplementary historical analysis using live DefiLlama data |
+| `npm run alert:test` | Send one Telegram connectivity message |
+| `npm run alert:examples` | Send the connection, opened, and recovered examples |
+| `npm run monitor:telegram:once` | Perform one held-asset monitoring check |
+| `npm run monitor:telegram` | Start continuous held-asset monitoring |
 
-```bash
-npm run study:depeg
-```
+## API routes
 
-That rerun requires internet access and can change slightly if the data provider
-revises historical observations. The published result includes the normalized
-sample's SHA-256 hash.
+All routes except `/api/health` require the reviewer session.
 
-## Key empirical results
-
-| Evaluation | Design | Result |
+| Method | Route | Purpose |
 |---|---|---|
-| Historical depeg detection | Calibrated on 2022; evaluated on untouched January–June 2023 observations | ROC-AUC 0.9729, precision 0.6667, recall 0.4000, F1 0.5000 |
-| Protocol-risk calibration | Leave-one-protocol-out evaluation over 24 pseudonymized units | ROC-AUC 0.7053, average precision 0.3405; 95% bootstrap interval 0.4874–0.9074 |
-| Tier comparison | Calibration-period BIC for depeg tiers; out-of-fold BIC for risk groups | Three depeg warning tiers and two protocol-risk groups were selected within the evaluated samples |
-| Constraint verification | Published summary plus a $9,000,000 allocation scenario against a $10,000,000 capital base | All declared rule families pass with zero violations; position bounds are $100,000–$5,000,000 |
+| `GET` | `/api/health` | Report liveness, data source, and disabled transaction state |
+| `GET` | `/api/portfolio/TREASURY-USDC` | Return the fictional review treasury and four positions |
+| `GET` | `/api/portfolio/DEMO-USDC` | Return the isolated $5 demonstration wallet |
+| `POST` | `/api/rebalance` | Validate the fixed advisory proposal without submitting a transaction |
+| `POST` | `/api/telegram/test` | Send a Telegram connectivity test when configured |
+| `POST` | `/api/logout` | End the reviewer session |
 
-The results support a bounded decision-support claim. They do not establish
-advance price prediction, autonomous trading performance, or realized returns.
+Unknown portfolio identifiers return `404`; the application does not provide
+arbitrary wallet lookup.
 
-## Repository map
+## Repository structure
 
-- `src/app/` — interface pages and authenticated JSON routes.
-- `src/components/` — shared navigation, cards, tables, and review controls.
-- `src/lib/` — reference records, optional PostgreSQL access, and signed sessions.
-- `src/depeg-monitor.mjs` — position-scoped alert and recovery state machine.
-- `src/composite-risk.mjs` and `src/protocol-risk.mjs` — transparent scoring.
-- `src/constrained-allocation.mjs` — deterministic allocation-rule validator.
-- `db/001_thesis.sql` — relational schema and review seed records.
-- `tests/` — executable tests for the decision modules.
-- `data/`, `scripts/`, and `results/` — empirical datasets, evaluation code, and outputs.
-- `docs/IMPLEMENTATION_MAP.md` — interface-to-code map.
-- `docs/DATA_PROVENANCE.md` — source and transformation boundaries.
-- `docs/METHOD.md` and `docs/RESULTS.md` — evaluation method and interpretation.
-- `docs/SYSTEM.md` — architecture and security boundaries.
-- `docs/TRACEABILITY.md` — research-question-to-evidence map.
-- `PRIVACY.md` — exact public-disclosure boundary.
+| Path | Contents |
+|---|---|
+| `src/app` | Next.js pages and authenticated API routes |
+| `src/components` | Application shell, charts, forms, and workflow components |
+| `src/lib` | Data access, monitoring, Telegram, and rebalance support |
+| `src/*.mjs` | Reusable depeg, risk, and allocation calculations |
+| `scripts` | Reproduction, validation, monitoring, and delivery commands |
+| `tests` | Deterministic unit tests |
+| `data` | Public event inputs, frozen prices, and review data |
+| `results` | Machine-readable evaluation outputs |
+| `db` | Optional PostgreSQL schema and fictional seed records |
+| `public` | Static interface assets |
+
+## Security and disclosure boundary
+
+The repository contains public protocol names, public historical observations,
+fictional interface records, pseudonymized evaluation rows, calculation code,
+and aggregate result files. It does not contain private keys, seed phrases,
+real wallet addresses, real positions, Telegram tokens, subscriber lists,
+cookies, production databases, or transaction hashes.
+
+The application cannot connect a wallet, construct a transaction, sign it, or
+broadcast it. Rebalance output is advisory and requires external human action.
+The only optional live outbound operation is Telegram notification delivery
+using credentials supplied by the reviewer.
+
+## Troubleshooting
+
+- **Port 3000 is already in use:** use the alternate URL printed by Next.js or
+  stop the other local server.
+- **Telegram is silent:** confirm that the reviewer pressed Start in the bot,
+  then check the chat ID and environment variables.
+- **The Telegram sender reports dormant:** set both `BOT_TOKEN` and
+  `TELEGRAM_CHAT_IDS` in the same terminal that starts the command.
+- **The online historical replay is slow:** use
+  `npm run episodes:depeg -- --offline` for the reproducible reviewer run.
+- **Dashboard totals differ in database mode:** confirm that the review seed was
+  loaded. The `DEMO-USDC` wallet is excluded from treasury totals.
 
 Author: **Alimbaev Arslan**

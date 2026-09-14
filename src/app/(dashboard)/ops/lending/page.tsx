@@ -7,7 +7,7 @@ export default function LendingPage() {
     description="Supplied assets, rates, collateral availability, and position state"
     initialRows={operationalPositions.lending}
     chartTitle="Lending exposure by protocol"
-    chartData={[{ label: "Aave V3", value: 5_000_000 }]}
+    chartData={[{ label: "Aave V3", value: 5_000_000, tone: "lending" }]}
     columns={[
       { key: "protocol", label: "Protocol" },
       { key: "client", label: "Client" },

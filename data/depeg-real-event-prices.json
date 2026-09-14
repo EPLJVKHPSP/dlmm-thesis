@@ -1,0 +1,337 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "provider": "DefiLlama Coins API",
+    "endpoint": "https://coins.llama.fi/chart/{coin}",
+    "documentation": "https://defillama.com/docs/api"
+  },
+  "fetchedAt": "2026-09-13T18:23:04.510Z",
+  "samplingPeriod": "6h",
+  "events": [
+    {
+      "eventId": "ust-collapse-2022",
+      "symbol": "UST",
+      "coin": "coingecko:terrausd",
+      "observations": [
+        {
+          "timestamp": 1651895944,
+          "price": 0.9996350025444607
+        },
+        {
+          "timestamp": 1651917595,
+          "price": 1.0015180232045506
+        },
+        {
+          "timestamp": 1651939207,
+          "price": 1.0013375934452189
+        },
+        {
+          "timestamp": 1651960766,
+          "price": 0.9967140466929069
+        },
+        {
+          "timestamp": 1651982409,
+          "price": 0.9964697897046075
+        },
+        {
+          "timestamp": 1652003998,
+          "price": 0.9961136345307067
+        },
+        {
+          "timestamp": 1652025557,
+          "price": 0.9980461082217308
+        },
+        {
+          "timestamp": 1652047160,
+          "price": 0.9974181938911877
+        },
+        {
+          "timestamp": 1652068808,
+          "price": 0.9975026170409329
+        },
+        {
+          "timestamp": 1652090372,
+          "price": 0.9937125115543513
+        },
+        {
+          "timestamp": 1652111924,
+          "price": 0.9859995120693884
+        },
+        {
+          "timestamp": 1652133539,
+          "price": 0.9208460568879487
+        },
+        {
+          "timestamp": 1652155190,
+          "price": 0.7570806392284458
+        },
+        {
+          "timestamp": 1652176815,
+          "price": 0.8990410590694684
+        },
+        {
+          "timestamp": 1652198419,
+          "price": 0.9055795468689085
+        },
+        {
+          "timestamp": 1652219987,
+          "price": 0.7789013708351619
+        },
+        {
+          "timestamp": 1652241626,
+          "price": 0.8301992392771745
+        },
+        {
+          "timestamp": 1652263163,
+          "price": 0.47397182229627355
+        },
+        {
+          "timestamp": 1652284783,
+          "price": 0.5305403605714444
+        },
+        {
+          "timestamp": 1652306369,
+          "price": 0.7471034419273539
+        },
+        {
+          "timestamp": 1652327905,
+          "price": 0.7153377568568958
+        },
+        {
+          "timestamp": 1652349544,
+          "price": 0.48558782456417915
+        },
+        {
+          "timestamp": 1652371198,
+          "price": 0.38858291365765235
+        },
+        {
+          "timestamp": 1652392779,
+          "price": 0.44576201380225944
+        },
+        {
+          "timestamp": 1652414417,
+          "price": 0.16887240114167365
+        },
+        {
+          "timestamp": 1652436006,
+          "price": 0.11270661146978654
+        },
+        {
+          "timestamp": 1652457551,
+          "price": 0.10161886402842212
+        },
+        {
+          "timestamp": 1652479194,
+          "price": 0.13181889603673658
+        },
+        {
+          "timestamp": 1652500754,
+          "price": 0.15757624972932258
+        },
+        {
+          "timestamp": 1652522417,
+          "price": 0.2178143629885696
+        },
+        {
+          "timestamp": 1652543940,
+          "price": 0.1632268745837218
+        },
+        {
+          "timestamp": 1652565551,
+          "price": 0.16961672056555094
+        },
+        {
+          "timestamp": 1652587211,
+          "price": 0.21286459827478213
+        },
+        {
+          "timestamp": 1652608805,
+          "price": 0.19132300096390054
+        },
+        {
+          "timestamp": 1652630405,
+          "price": 0.16311009934292245
+        },
+        {
+          "timestamp": 1652651953,
+          "price": 0.14857531131754315
+        }
+      ]
+    },
+    {
+      "eventId": "usdc-svb-2023",
+      "symbol": "USDC",
+      "coin": "coingecko:usd-coin",
+      "observations": [
+        {
+          "timestamp": 1678417279,
+          "price": 1.0001132206339052
+        },
+        {
+          "timestamp": 1678438673,
+          "price": 1.001
+        },
+        {
+          "timestamp": 1678460423,
+          "price": 0.9961439532806028
+        },
+        {
+          "timestamp": 1678481873,
+          "price": 0.998901
+        },
+        {
+          "timestamp": 1678503622,
+          "price": 0.9798257461693491
+        },
+        {
+          "timestamp": 1678525075,
+          "price": 0.921553
+        },
+        {
+          "timestamp": 1678546801,
+          "price": 0.9115650426429334
+        },
+        {
+          "timestamp": 1678568395,
+          "price": 0.9737746297143816
+        },
+        {
+          "timestamp": 1678590064,
+          "price": 0.965392203296195
+        },
+        {
+          "timestamp": 1678611670,
+          "price": 0.947826905619178
+        },
+        {
+          "timestamp": 1678633297,
+          "price": 0.9499181936416875
+        },
+        {
+          "timestamp": 1678654684,
+          "price": 0.968015
+        },
+        {
+          "timestamp": 1678676395,
+          "price": 0.9947226403126548
+        },
+        {
+          "timestamp": 1678697983,
+          "price": 0.9897267231122074
+        },
+        {
+          "timestamp": 1678719488,
+          "price": 0.999044
+        },
+        {
+          "timestamp": 1678741064,
+          "price": 0.999538
+        },
+        {
+          "timestamp": 1678762687,
+          "price": 0.99817
+        },
+        {
+          "timestamp": 1678784286,
+          "price": 0.997297
+        },
+        {
+          "timestamp": 1678805884,
+          "price": 0.999889
+        },
+        {
+          "timestamp": 1678827768,
+          "price": 0.997521
+        }
+      ]
+    },
+    {
+      "eventId": "dai-usdc-contagion-2023",
+      "symbol": "DAI",
+      "coin": "coingecko:dai",
+      "observations": [
+        {
+          "timestamp": 1678406443,
+          "price": 0.999331
+        },
+        {
+          "timestamp": 1678428044,
+          "price": 0.999543
+        },
+        {
+          "timestamp": 1678449656,
+          "price": 1.001
+        },
+        {
+          "timestamp": 1678471238,
+          "price": 1.003
+        },
+        {
+          "timestamp": 1678492853,
+          "price": 0.995431
+        },
+        {
+          "timestamp": 1678514457,
+          "price": 0.945908
+        },
+        {
+          "timestamp": 1678536077,
+          "price": 0.91534
+        },
+        {
+          "timestamp": 1678557669,
+          "price": 0.956596
+        },
+        {
+          "timestamp": 1678579264,
+          "price": 0.966877
+        },
+        {
+          "timestamp": 1678600879,
+          "price": 0.965781
+        },
+        {
+          "timestamp": 1678622483,
+          "price": 0.956088
+        },
+        {
+          "timestamp": 1678644074,
+          "price": 0.9655
+        },
+        {
+          "timestamp": 1678665655,
+          "price": 0.992594
+        },
+        {
+          "timestamp": 1678687254,
+          "price": 0.986114
+        },
+        {
+          "timestamp": 1678708873,
+          "price": 0.99106
+        },
+        {
+          "timestamp": 1678730501,
+          "price": 1
+        },
+        {
+          "timestamp": 1678752073,
+          "price": 1.001
+        },
+        {
+          "timestamp": 1678773695,
+          "price": 0.999907
+        },
+        {
+          "timestamp": 1678795269,
+          "price": 0.999933
+        },
+        {
+          "timestamp": 1678816885,
+          "price": 0.9978
+        }
+      ]
+    }
+  ]
+}

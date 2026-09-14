@@ -1,41 +1,41 @@
 import { Badge, Card, Metric, PageHeader, SectionTitle } from "@/components/ui";
 import { loadAppModel } from "@/lib/data-repository";
+import { monitorScopeRefresh } from "@/lib/reference-data";
 
 export default async function DepegPage() {
   const model = await loadAppModel();
-  const last = model.depegSamples.at(-1)!;
+  const activeDepegs = model.monitorScope.filter((row) => row.lastTransition !== "stable").length;
 
   return <>
-    <PageHeader title="Depeg Monitor" description="Per-position peg monitoring against a configured fair value using the historical USDC event window."/>
+    <PageHeader title="Depeg Monitor" description="Every asset in use, watched once against its reference."/>
     <div className="grid metrics">
-      <Metric label="Observed price" value={`$${last.price.toFixed(4)}`} detail="Aave V3 · USDC · POS-001" tone="warn"/>
-      <Metric label="Reference" value="$1.0000" detail="Configured peg"/>
-      <Metric label="Deviation" value={`${(Math.abs(last.price - 1) * 100).toFixed(2)}%`} detail="3.00% threshold" tone="warn"/>
-      <Metric label="Event state" value="ACTIVE" detail="Opened at 13:00 UTC" tone="accent"/>
+      <Metric label="Assets in scope" value={String(model.monitorScope.length)} detail="USDC · DAI · stETH" tone="accent"/>
+      <Metric label="Active depegs" value={String(activeDepegs)} detail="Legs breaching threshold" tone={activeDepegs ? "bad" : "good"}/>
+      <Metric label="Last refresh" value={monitorScopeRefresh.value} detail={monitorScopeRefresh.detail} tone="good"/>
+      <Metric label="Threshold" value="3.00%" detail="Deviation vs reference" tone="warn"/>
     </div>
-    <div className="grid two-col">
-      <Card>
-        <SectionTitle title="Observation timeline" detail="Each sample is persisted before a state transition is notified"/>
-        <table className="data-table">
-          <thead><tr><th>Time</th><th>Price</th><th>Deviation</th><th>Transition</th></tr></thead>
-          <tbody>{model.depegSamples.map((sample) => <tr key={sample.observedAt}>
-            <td>{sample.observedAt}</td>
-            <td>${sample.price.toFixed(4)}</td>
-            <td>{(Math.abs(sample.price - sample.referencePrice) * 100).toFixed(2)}%</td>
-            <td><Badge tone={sample.transition === "stable" ? "good" : sample.transition === "opened" ? "bad" : "warn"}>{sample.transition}</Badge></td>
-          </tr>)}</tbody>
-        </table>
-      </Card>
-      <Card>
-        <SectionTitle title="How the code works" detail="Deterministic state transitions"/>
-        <div className="formula">deviation = |price − reference| / reference × 100</div>
-        <div className="checks">
-          <div className="check"><span>Position is active</span><span>PASS</span></div>
-          <div className="check"><span>Stablecoin leg is configured</span><span>PASS</span></div>
-          <div className="check"><span>Deviation ≥ 3.00%</span><span>PASS</span></div>
-          <div className="check"><span>Duplicate event prevented</span><span>PASS</span></div>
-        </div>
-      </Card>
-    </div>
+    <Card>
+      <SectionTitle title="Monitored assets" detail="One row per asset — held by several legs, watched once"/>
+      <div className="table-wrap"><table className="data-table"><thead><tr><th>Asset</th><th>Legs</th><th>Reference</th><th>Method</th><th>Threshold</th><th>Last state</th></tr></thead><tbody>
+        {model.monitorScope.map((row) => <tr key={row.asset}>
+          <td><strong>{row.asset}</strong></td>
+          <td>{row.legs}</td>
+          <td>{row.reference}</td>
+          <td>{row.method}</td>
+          <td className="align-right">{row.thresholdPct.toFixed(2)}%</td>
+          <td><Badge tone={row.lastTransition === "stable" ? "good" : row.lastTransition === "opened" ? "bad" : "warn"}>{row.lastTransition}</Badge></td>
+        </tr>)}
+      </tbody></table></div>
+    </Card>
+    <div className="spacer"/>
+    <Card>
+      <SectionTitle title="Monitor checks" detail="Scope and transition guards"/>
+      <div className="checks">
+        <div className="check"><span>Leg active and in scope</span><span>PASS</span></div>
+        <div className="check"><span>Observation above confidence floor</span><span>PASS</span></div>
+        <div className="check"><span>Deviation ≥ threshold</span><span>PASS</span></div>
+        <div className="check"><span>Duplicate event prevented</span><span>PASS</span></div>
+      </div>
+    </Card>
   </>;
 }

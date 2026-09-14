@@ -20,11 +20,27 @@ services:
     environment:
       DATABASE_URL: postgres://dlmm_review:dlmm_review@postgres:5432/dlmm_thesis
       DLMM_SESSION_KEY: thesis-compose-session-key
+      BOT_TOKEN: ${BOT_TOKEN:-}
+      TELEGRAM_CHAT_IDS: ${TELEGRAM_CHAT_IDS:-}
     depends_on:
       postgres:
         condition: service_healthy
     ports:
       - "3000:3000"
+    networks: [dlmm_thesis]
+
+  telegram-monitor:
+    build: .
+    command: ["node", "scripts/telegram-monitor.mjs"]
+    environment:
+      DATABASE_URL: postgres://dlmm_review:dlmm_review@postgres:5432/dlmm_thesis
+      BOT_TOKEN: ${BOT_TOKEN:-}
+      TELEGRAM_CHAT_IDS: ${TELEGRAM_CHAT_IDS:-}
+      TELEGRAM_POLL_SECONDS: ${TELEGRAM_POLL_SECONDS:-60}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
     networks: [dlmm_thesis]
 
 volumes:

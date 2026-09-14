@@ -1,6 +1,6 @@
 {
   "evaluation": "isolated-engineering-validation",
-  "publicArtifactVersion": "v1.1.0",
+  "publicArtifactVersion": "v1.2.0",
   "observedAt": "2026-08-24",
   "applicationTests": {
     "passed": 83,

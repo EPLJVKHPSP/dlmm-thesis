@@ -7,7 +7,7 @@ export default function StakingPage() {
     description="Active staking positions, receipt assets, and realized performance"
     initialRows={operationalPositions.staking}
     chartTitle="Staking exposure by token"
-    chartData={[{ label: "stETH", value: 1_900_000 }]}
+    chartData={[{ label: "stETH", value: 1_900_000, tone: "staking" }]}
     columns={[
       { key: "platform", label: "Platform" },
       { key: "client", label: "Client" },

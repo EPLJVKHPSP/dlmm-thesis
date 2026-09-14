@@ -11,12 +11,15 @@ const sensitivity = await json("../results/risk-sensitivity-summary.json");
 const constraints = await json("../results/rebalance-constraint-summary.json");
 const synthetic = await json("../results/depeg-benchmark.json");
 const engineering = await json("../results/engineering-validation-summary.json");
+const exactMonitor = await json("../results/depeg-real-event-replay.json");
 
 const checks = [
   [historical.sample.trainRows === 10565, "historical training rows"],
   [historical.sample.testRows === 5040, "historical test rows"],
   [historical.calibratedModel.testMetrics.rocAuc > 0.97, "historical held-out ROC-AUC"],
   [historical.calibratedModel.testEvents.events.every((event) => event.detected), "held-out event detection"],
+  [exactMonitor.summary.passed === 3 && exactMonitor.summary.total === 3, "exact monitor real-event outcomes"],
+  [exactMonitor.implementation === "src/depeg-monitor.mjs classifyDepegObservation", "exact monitor shared implementation"],
   [risk.sample.protocols === 24, "pseudonymized risk units"],
   [risk.crossValidation.rocAuc > 0.70, "risk out-of-fold ROC-AUC"],
   [risk.crossValidation.rocAucBootstrap95.lower95 < 0.5, "risk uncertainty disclosed"],

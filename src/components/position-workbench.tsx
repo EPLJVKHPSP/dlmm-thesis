@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Badge, Card, PageHeader, SectionTitle } from "@/components/ui";
 import { DonutChart } from "@/components/charts";
 import type { ChartDatum, PositionView } from "@/lib/view-data";
@@ -51,6 +51,23 @@ export function PositionWorkbench({
 }) {
   const [rows, setRows] = useState(initialRows);
   const [open, setOpen] = useState(false);
+  const addButton = useRef<HTMLButtonElement>(null);
+  const firstField = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    firstField.current?.focus();
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeModal();
+    };
+    document.addEventListener("keydown", closeOnEscape);
+    return () => document.removeEventListener("keydown", closeOnEscape);
+  }, [open]);
+
+  function closeModal() {
+    setOpen(false);
+    requestAnimationFrame(() => addButton.current?.focus());
+  }
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -65,14 +82,14 @@ export function PositionWorkbench({
     }
     setRows((current) => [next, ...current]);
     event.currentTarget.reset();
-    setOpen(false);
+    closeModal();
   }
 
   return <>
     <PageHeader
       title={activity}
       description={description}
-      actions={<button type="button" className="button" onClick={() => setOpen(true)}>Add {activity.toLowerCase()}</button>}
+      actions={<button ref={addButton} type="button" className="button" onClick={() => setOpen(true)}>Add {activity.toLowerCase()}</button>}
     />
 
     <div className="grid ops-overview">
@@ -102,12 +119,12 @@ export function PositionWorkbench({
       </div>
     </Card>
 
-    {open && <div className="modal-layer" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setOpen(false); }}>
-      <section className="form-modal" role="dialog" aria-modal="true" aria-labelledby="position-form-title">
-        <div className="modal-head"><div><h2 id="position-form-title">Add {activity.toLowerCase()}</h2><p>Create a position record</p></div><button className="modal-close" type="button" onClick={() => setOpen(false)} aria-label="Close">×</button></div>
+    {open && <div className="modal-layer" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) closeModal(); }}>
+      <section className="form-modal" role="dialog" aria-modal="true" aria-labelledby="position-form-title" aria-describedby="position-form-description">
+        <div className="modal-head"><div><h2 id="position-form-title">Add {activity.toLowerCase()}</h2><p id="position-form-description">Create a position record</p></div><button className="modal-close" type="button" onClick={closeModal} aria-label="Close">×</button></div>
         <form onSubmit={submit}>
-          <div className="form-grid">{fields.map((field) => <label key={field.name}><span>{field.label}</span><input name={field.name} type={field.type ?? "text"} step={field.type === "number" ? "any" : undefined} placeholder={field.placeholder} required={field.required}/></label>)}</div>
-          <div className="modal-actions"><button type="button" className="button-secondary" onClick={() => setOpen(false)}>Cancel</button><button type="submit" className="button">Create position</button></div>
+          <div className="form-grid">{fields.map((field, index) => <label key={field.name}><span>{field.label}</span><input ref={index === 0 ? firstField : undefined} name={field.name} type={field.type ?? "text"} step={field.type === "number" ? "any" : undefined} placeholder={field.placeholder} required={field.required}/></label>)}</div>
+          <div className="modal-actions"><button type="button" className="button-secondary" onClick={closeModal}>Cancel</button><button type="submit" className="button">Create position</button></div>
         </form>
       </section>
     </div>}

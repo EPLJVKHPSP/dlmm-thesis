@@ -1,6 +1,6 @@
 {
   "evaluation": "depeg-detector-synthetic-benchmark",
-  "publicArtifactVersion": "v1.1.0",
+  "publicArtifactVersion": "v1.2.0",
   "generatedAt": "2026-08-24T18:39:53.746Z",
   "dataset": {
     "kind": "deterministic synthetic fixture",

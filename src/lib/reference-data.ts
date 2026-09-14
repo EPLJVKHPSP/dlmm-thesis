@@ -33,15 +33,44 @@ export const positionSnapshot: PositionRecord[] = [
   { id: "POS-004", walletId: walletSnapshot.id, strategyId: "STR-CURVE-FARM", kind: "Farming", asset: "DAI / USDC", protocol: "Curve", principalUsd: 100_000, status: "Active", collateralFor: null, poolGauge: "CURVE-DAI-USDC", assessmentPeriod: "2026-Q3" },
 ];
 
-export const depegSamples = [
-  { observedAt: "2023-03-11 07:00 UTC", price: 0.998, referencePrice: 1, transition: "stable", source: "DefiLlama historical study" },
-  { observedAt: "2023-03-11 13:00 UTC", price: 0.962, referencePrice: 1, transition: "opened", source: "DefiLlama historical study" },
-  { observedAt: "2023-03-11 19:00 UTC", price: 0.954, referencePrice: 1, transition: "active", source: "DefiLlama historical study" },
+// Toy wallet-query example (e.g. a 5 USD deposit). Kept outside positionSnapshot
+// so dashboard totals and the $9M/$10M reconciliation scenario stay unchanged.
+export const demoWallet = {
+  id: "DEMO-USDC",
+  label: "Demo wallet",
+  asset: "USDC",
+  balanceUsd: 5,
+};
+
+export const demoPositions: PositionRecord[] = [
+  { id: "DEMO-POS-001", walletId: demoWallet.id, strategyId: "STR-AAVE-LEND", kind: "Lending", asset: "USDC", protocol: "Aave V3", principalUsd: 5, status: "Demo", collateralFor: null, poolGauge: "AAVE-V3-USDC", assessmentPeriod: "2026-Q3" },
 ];
+
+// Historical replay rows live in scripts/depeg-episodes.mjs and data/ —
+// the interface shows live monitor scope only.
+export type MonitorScopeRow = {
+  asset: string;
+  legs: string;
+  reference: string;
+  method: string;
+  thresholdPct: number;
+  lastTransition: string;
+};
+
+export const monitorScope: MonitorScopeRow[] = [
+  { asset: "USDC", legs: "POS-001, POS-002, POS-004", reference: "$1.0000 peg", method: "DefiLlama market price", thresholdPct: 3, lastTransition: "stable" },
+  { asset: "DAI", legs: "POS-004", reference: "$1.0000 peg", method: "DefiLlama market price", thresholdPct: 3, lastTransition: "stable" },
+  { asset: "stETH", legs: "POS-003", reference: "1.0000 ETH", method: "DefiLlama stETH/ETH ratio", thresholdPct: 3, lastTransition: "stable" },
+];
+
+// When the monitor scope (assets, references, thresholds) was last refreshed.
+export const monitorScopeRefresh = {
+  value: "9 Sep 2026",
+  detail: "09:00 UTC · scope and thresholds",
+};
 
 export const notifications = [
   { id: "NOTICE-001", kind: "depeg", title: "DEPEG ALERT", message: "POS-001 · Aave V3 USDC lending · price $0.9620 · deviation 3.80%", status: "Opened", createdAt: "13:00" },
-  { id: "NOTICE-002", kind: "rebalance", title: "REBALANCE READY", message: "$1,000,000 USDC · Aave V3 lending · APY 4.20% · risk 7.15/10", status: "Review required", createdAt: "19:05" },
 ];
 
 export const evaluationResults = [
@@ -56,7 +85,7 @@ export type AppModel = {
   wallet: typeof walletSnapshot;
   strategies: typeof strategySnapshot;
   positions: PositionRecord[];
-  depegSamples: typeof depegSamples;
+  monitorScope: typeof monitorScope;
   notifications: typeof notifications;
   evaluation: typeof evaluationResults;
 };
@@ -66,7 +95,7 @@ export const referenceModel: AppModel = {
   wallet: walletSnapshot,
   strategies: strategySnapshot,
   positions: positionSnapshot,
-  depegSamples,
+  monitorScope,
   notifications,
   evaluation: evaluationResults,
 };

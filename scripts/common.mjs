@@ -6,7 +6,7 @@ export function argValue(name) {
 }
 
 export function artifactVersion() {
-  return "v1.1.0";
+  return "v1.2.0";
 }
 
 export function pathFromArgument(name, fallback) {

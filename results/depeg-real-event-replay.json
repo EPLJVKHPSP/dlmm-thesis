@@ -1,0 +1,87 @@
+{
+  "evaluation": "exact-monitor-real-event-replay",
+  "publicArtifactVersion": "v1.2.0",
+  "generatedAt": "2026-09-13T18:37:51.033Z",
+  "implementation": "src/depeg-monitor.mjs classifyDepegObservation",
+  "settings": {
+    "thresholdPct": 3,
+    "minConfidence": 0.5
+  },
+  "source": {
+    "provider": "DefiLlama Coins API",
+    "endpoint": "https://coins.llama.fi/chart/{coin}",
+    "documentation": "https://defillama.com/docs/api"
+  },
+  "snapshotSha256": "feaf476dde2e4af9b7de30d521524f6291b0c2ed6fe7f2173f21819897b97aee",
+  "events": [
+    {
+      "eventId": "ust-collapse-2022",
+      "symbol": "UST",
+      "expected": {
+        "opened": true,
+        "recovered": false
+      },
+      "observed": {
+        "opened": true,
+        "recovered": false
+      },
+      "passed": true,
+      "firstOpenAt": "2022-05-09T21:58:59.000Z",
+      "openLatencyHours": 47.98,
+      "firstOpenPrice": 0.920846,
+      "firstRecoveryAt": null,
+      "minimumPrice": 0.101619,
+      "maximumDeviationPct": 89.838,
+      "evaluatedObservations": 28
+    },
+    {
+      "eventId": "usdc-svb-2023",
+      "symbol": "USDC",
+      "expected": {
+        "opened": true,
+        "recovered": true
+      },
+      "observed": {
+        "opened": true,
+        "recovered": true
+      },
+      "passed": true,
+      "firstOpenAt": "2023-03-11T08:57:55.000Z",
+      "openLatencyHours": 11.97,
+      "firstOpenPrice": 0.921553,
+      "firstRecoveryAt": "2023-03-11T20:59:55.000Z",
+      "minimumPrice": 0.911565,
+      "maximumDeviationPct": 8.843,
+      "evaluatedObservations": 12
+    },
+    {
+      "eventId": "dai-usdc-contagion-2023",
+      "symbol": "DAI",
+      "expected": {
+        "opened": true,
+        "recovered": true
+      },
+      "observed": {
+        "opened": true,
+        "recovered": true
+      },
+      "passed": true,
+      "firstOpenAt": "2023-03-11T06:00:57.000Z",
+      "openLatencyHours": 6.02,
+      "firstOpenPrice": 0.945908,
+      "firstRecoveryAt": "2023-03-13T00:00:55.000Z",
+      "minimumPrice": 0.91534,
+      "maximumDeviationPct": 8.466,
+      "evaluatedObservations": 12
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "total": 3,
+    "materialBreachesOpened": 3
+  },
+  "limitations": [
+    "The replay uses six-hour DefiLlama observations, while the live worker normally polls every 60 seconds.",
+    "The replay validates contemporaneous threshold behavior; it does not claim advance prediction."
+  ]
+}

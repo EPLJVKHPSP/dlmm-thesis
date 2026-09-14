@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 type NavItem = { href: string; label: string; icon: "gauge" | "layers" | "target" | "scale" | "bell" | "activity" | "trend" | "coins" | "sprout" | "bank" | "search" | "calendar" };
@@ -16,7 +16,13 @@ const groups: { title: string; items: NavItem[] }[] = [
     { href: "/assessment-period", label: "Assessment Period", icon: "calendar" },
   ] },
   { title: "Rebalance", items: [
+    { href: "/rebalance/select", label: "Select", icon: "layers" },
+    { href: "/rebalance/idle", label: "Idle Assets", icon: "coins" },
     { href: "/rebalance", label: "Liquidity Optimization", icon: "target" },
+    { href: "/rebalance/preview", label: "Preview", icon: "activity" },
+    { href: "/rebalance/guideline", label: "Execute", icon: "scale" },
+  ] },
+  { title: "Monitoring", items: [
     { href: "/rebalance/exposure", label: "Lending Health", icon: "activity" },
     { href: "/depeg", label: "Depeg Monitor", icon: "target" },
   ] },
@@ -29,10 +35,6 @@ const groups: { title: string; items: NavItem[] }[] = [
     { href: "/ops/farming", label: "Farming", icon: "sprout" },
     { href: "/ops/lending", label: "Lending", icon: "bank" },
     { href: "/ops/borrowing", label: "Borrowing", icon: "layers" },
-    { href: "/notifications", label: "Notifications", icon: "bell" },
-  ] },
-  { title: "Thesis", items: [
-    { href: "/evaluation", label: "Evaluation", icon: "activity" },
   ] },
 ];
 
@@ -63,9 +65,12 @@ function NavLinks({ pathname, onNavigate }: { pathname: string; onNavigate?: () 
     <div className="sidebar-brand"><Image src="/logo.png" alt="DLMM" width={28} height={28}/><strong>DLMM</strong></div>
     {groups.map(group => <section className="nav-group" key={group.title}>
       <p>{group.title}</p>
-      {group.items.map(item => <Link key={item.href} href={item.href} onClick={onNavigate} className={activePath(pathname, item.href) ? "active" : ""}>
+      {group.items.map(item => {
+        const active = activePath(pathname, item.href);
+        return <Link key={item.href} href={item.href} onClick={onNavigate} className={active ? "active" : ""} aria-current={active ? "page" : undefined}>
         <NavIcon kind={item.icon}/><span>{item.label}</span>
-      </Link>)}
+        </Link>;
+      })}
     </section>)}
   </nav>;
 }
@@ -73,14 +78,36 @@ function NavLinks({ pathname, onNavigate }: { pathname: string; onNavigate?: () 
 export function AppShell({ user, children }: { user: { name: string; email: string; role: string }; children: React.ReactNode }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const current = groups.flatMap(group => group.items).find(item => activePath(pathname, item.href))?.label || "DLMM";
+  const menuButton = useRef<HTMLButtonElement>(null);
+  const closeButton = useRef<HTMLButtonElement>(null);
+  const currentGroup = groups.find(group => group.items.some(item => activePath(pathname, item.href)));
+  const current = currentGroup?.items.find(item => activePath(pathname, item.href))?.label || "DLMM";
+
+  useEffect(() => {
+    if (!open) return;
+    closeButton.current?.focus();
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+        requestAnimationFrame(() => menuButton.current?.focus());
+      }
+    };
+    document.addEventListener("keydown", closeOnEscape);
+    return () => document.removeEventListener("keydown", closeOnEscape);
+  }, [open]);
+
+  function closeMenu() {
+    setOpen(false);
+    requestAnimationFrame(() => menuButton.current?.focus());
+  }
 
   return <div className="app-shell">
     <aside className="desktop-sidebar"><NavLinks pathname={pathname}/><UserFooter user={user}/></aside>
-    {open && <div className="mobile-drawer"><button className="drawer-backdrop" aria-label="Close menu" onClick={() => setOpen(false)}/><aside><button className="drawer-close" onClick={() => setOpen(false)} aria-label="Close menu">×</button><NavLinks pathname={pathname} onNavigate={() => setOpen(false)}/><UserFooter user={user}/></aside></div>}
+    {open && <div className="mobile-drawer"><button className="drawer-backdrop" aria-label="Close menu" onClick={closeMenu}/><aside aria-label="Application menu"><button ref={closeButton} className="drawer-close" onClick={closeMenu} aria-label="Close menu">×</button><NavLinks pathname={pathname} onNavigate={closeMenu}/><UserFooter user={user}/></aside></div>}
     <div className="app-body">
       <header className="app-header">
-        <div className="mobile-title"><button className="icon-button menu-button" onClick={() => setOpen(true)} aria-label="Open menu">☰</button><Image src="/logo.png" alt="DLMM" width={24} height={24}/><span>{current}</span></div>
+        <div className="desktop-context" aria-label="Current location"><span>{currentGroup?.title ?? "Workspace"}</span><span className="context-separator" aria-hidden="true">/</span><strong>{current}</strong></div>
+        <div className="mobile-title"><button ref={menuButton} className="icon-button menu-button" onClick={() => setOpen(true)} aria-label="Open menu" aria-expanded={open}>☰</button><Image src="/logo.png" alt="DLMM" width={24} height={24}/><span>{current}</span></div>
         <div className="header-actions"><ThemeToggle/></div>
       </header>
       <main className="page-scroll"><div className="page-container">{children}</div></main>
@@ -89,5 +116,5 @@ export function AppShell({ user, children }: { user: { name: string; email: stri
 }
 
 function UserFooter({ user }: { user: { name: string; email: string; role: string } }) {
-  return <div className="user-footer"><strong>{user.name}</strong><span>{user.role === "reviewer" ? "Reviewer" : user.role}</span><form action="/api/logout" method="post"><button>Sign out</button></form></div>;
+  return <div className="user-footer"><div className="user-meta"><strong>{user.name}</strong><span>{user.role === "reviewer" ? "Reviewer" : user.role}</span></div><form action="/api/logout" method="post"><button>Sign out</button></form></div>;
 }

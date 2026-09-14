@@ -23,7 +23,11 @@ type Tokens = {
   muted: string;
   surface: string;
   border: string;
+  lending: string;
   borrowing: string;
+  staking: string;
+  farming: string;
+  idle: string;
 };
 
 const FALLBACK: Tokens = {
@@ -32,7 +36,11 @@ const FALLBACK: Tokens = {
   muted: "#71717a",
   surface: "#ffffff",
   border: "#e4e4e7",
+  lending: "#4f46e5",
   borrowing: "#c2410c",
+  staking: "#059669",
+  farming: "#7c3aed",
+  idle: "#a1a1aa",
 };
 
 function readTokens(): Tokens {
@@ -45,7 +53,11 @@ function readTokens(): Tokens {
     muted: token("--muted", FALLBACK.muted),
     surface: token("--surface", FALLBACK.surface),
     border: token("--border", FALLBACK.border),
+    lending: token("--chart-lending", FALLBACK.lending),
     borrowing: token("--chart-borrow", FALLBACK.borrowing),
+    staking: token("--chart-staking", FALLBACK.staking),
+    farming: token("--chart-farming", FALLBACK.farming),
+    idle: token("--chart-idle", FALLBACK.idle),
   };
 }
 
@@ -90,7 +102,14 @@ export function DonutChart({
   const height = size === "large" ? 340 : 260;
   const outerRadius = size === "large" ? 122 : 88;
   const innerRadius = size === "large" ? 73 : 53;
-  const color = (row: ChartDatum, index: number) => row.tone === "borrowing" ? tokens.borrowing : tokens.palette[index % tokens.palette.length];
+  const activityColor: Record<string, string> = {
+    lending: tokens.lending,
+    borrowing: tokens.borrowing,
+    staking: tokens.staking,
+    farming: tokens.farming,
+    idle: tokens.idle,
+  };
+  const color = (row: ChartDatum, index: number) => (row.tone && activityColor[row.tone]) || tokens.palette[index % tokens.palette.length];
 
   return <div className={`donut-layout ${size === "large" ? "donut-large" : ""}`}>
     <div className="donut-canvas" style={{ height }}>

@@ -1,6 +1,6 @@
 {
   "evaluation": "protocol-incident-risk-weight-calibration",
-  "publicArtifactVersion": "v1.1.0",
+  "publicArtifactVersion": "v1.2.0",
   "generatedAt": "2026-08-24T19:57:50.243Z",
   "design": {
     "unit": "protocol",

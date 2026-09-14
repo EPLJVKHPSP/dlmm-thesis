@@ -43,7 +43,7 @@ export default async function OverviewPage() {
     </Card>
 
     <div className="spacer"/>
-    <div className="grid two-col dashboard-charts">
+    <div className="grid two-col equal-cols dashboard-charts">
       <Card className="chart-card-wide"><SectionTitle title="Portfolio composition" detail="By holding"/><DonutChart data={portfolioComposition} size="large"/></Card>
       <Card className="chart-card-wide"><SectionTitle title="Exposure by activity" detail="$9.0m deployed · $1.0m idle"/><DonutChart data={activityExposure} size="large"/></Card>
     </div>

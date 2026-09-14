@@ -27,6 +27,7 @@
       "split": "train",
       "onset": "2022-05-07T22:00:00Z",
       "end": "2022-05-15T00:00:00Z",
+      "monitorExpectation": { "opened": true, "recovered": false },
       "labelBasis": "Stanford SNAP identifies 7 May 2022 as the Terra-Luna shock onset; the terminal window is censored at 15 May because UST did not recover.",
       "sources": [
         "https://snap.stanford.edu/data/ERC20-stablecoins.html",
@@ -50,6 +51,7 @@
       "split": "test",
       "onset": "2023-03-10T21:00:00Z",
       "end": "2023-03-14T00:00:00Z",
+      "monitorExpectation": { "opened": true, "recovered": true },
       "labelBasis": "The held-out window begins at the independently reported early-warning time and spans the SVB-related market dislocation through the return toward par.",
       "sources": [
         "https://arxiv.org/abs/2306.10612",
@@ -63,6 +65,7 @@
       "split": "test",
       "onset": "2023-03-11T00:00:00Z",
       "end": "2023-03-14T00:00:00Z",
+      "monitorExpectation": { "opened": true, "recovered": true },
       "labelBasis": "The held-out DAI window captures the documented USDC-collateral contagion during the SVB event.",
       "sources": [
         "https://www.ecb.europa.eu/pub/pdf/scpwps/ecb.wp3208~051a880042.en.pdf",

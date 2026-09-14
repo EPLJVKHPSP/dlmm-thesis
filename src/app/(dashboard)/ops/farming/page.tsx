@@ -7,7 +7,7 @@ export default function FarmingPage() {
     description="Liquidity-pool positions, yield, harvests, and impermanent loss"
     initialRows={operationalPositions.farming}
     chartTitle="Farming exposure by platform"
-    chartData={[{ label: "Curve", value: 100_000 }]}
+    chartData={[{ label: "Curve", value: 100_000, tone: "farming" }]}
     columns={[
       { key: "platform", label: "Platform" },
       { key: "client", label: "Client" },

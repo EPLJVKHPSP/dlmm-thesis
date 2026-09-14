@@ -6,7 +6,6 @@ const usd = (value: number) => `$${value.toLocaleString("en-US", { maximumFracti
 
 export default function LendingHealthPage() {
   return <>
-    <div className="subnav"><a href="/rebalance">Liquidity optimization</a><a href="/rebalance/exposure" className="active">Exposure & lending health</a></div>
     <PageHeader title="Exposure" description="Active position exposure, borrow headroom, protocol limits, and collateral"/>
     <Card><SectionTitle title="Lending health" detail="Fund-level borrow headroom · Lend $5,000,000"/><LendingHealthRuler data={lendingHealth}/></Card>
     <div className="spacer"/>
