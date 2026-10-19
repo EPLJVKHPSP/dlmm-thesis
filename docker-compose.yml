@@ -4,7 +4,7 @@ services:
     environment:
       POSTGRES_DB: dlmm_thesis
       POSTGRES_USER: dlmm_review
-      POSTGRES_PASSWORD: dlmm_review
+      POSTGRES_PASSWORD: ${DLMM_DB_PASSWORD:?Set a unique PostgreSQL password}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U dlmm_review -d dlmm_thesis"]
       interval: 3s
@@ -18,8 +18,9 @@ services:
   app:
     build: .
     environment:
-      DATABASE_URL: postgres://dlmm_review:dlmm_review@postgres:5432/dlmm_thesis
-      DLMM_SESSION_KEY: thesis-compose-session-key
+      DATABASE_URL: ${DLMM_DATABASE_URL:?Set PostgreSQL URI with encoded password}
+      DLMM_SESSION_KEY: ${DLMM_SESSION_KEY:?Configure a private session key}
+      DLMM_REVIEW_PASSWORD: ${DLMM_REVIEW_PASSWORD:-}
       BOT_TOKEN: ${BOT_TOKEN:-}
       TELEGRAM_CHAT_IDS: ${TELEGRAM_CHAT_IDS:-}
     depends_on:
@@ -33,7 +34,7 @@ services:
     build: .
     command: ["node", "scripts/telegram-monitor.mjs"]
     environment:
-      DATABASE_URL: postgres://dlmm_review:dlmm_review@postgres:5432/dlmm_thesis
+      DATABASE_URL: ${DLMM_DATABASE_URL:?Set PostgreSQL URI with encoded password}
       BOT_TOKEN: ${BOT_TOKEN:-}
       TELEGRAM_CHAT_IDS: ${TELEGRAM_CHAT_IDS:-}
       TELEGRAM_POLL_SECONDS: ${TELEGRAM_POLL_SECONDS:-60}

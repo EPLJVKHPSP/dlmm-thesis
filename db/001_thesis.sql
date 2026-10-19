@@ -61,16 +61,6 @@ CREATE TABLE IF NOT EXISTS depeg_monitor_state (
   updated_at timestamptz NOT NULL DEFAULT now()
 );
 
-INSERT INTO app_user (id, email, password_hash, display_name, role)
-VALUES (
-  'REVIEWER-01',
-  'reviewer@dlmm.local',
-  '$2b$12$3E/X1xjR120ieDIi4QjW2uv0GG.HGM4hNcsMSk7i4lpjlQLGLWu4W',
-  'Thesis Reviewer',
-  'reviewer'
-)
-ON CONFLICT (id) DO NOTHING;
-
 INSERT INTO wallet (id, label, asset, balance_usd) VALUES
   ('TREASURY-USDC', 'USDC Treasury', 'USDC', 1000000.00),
   ('DEMO-USDC', 'Demo wallet', 'USDC', 5.00)

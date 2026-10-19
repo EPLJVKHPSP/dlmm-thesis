@@ -28,10 +28,12 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:3000` and sign in with:
-
-- Login: `reviewer@dlmm.local`
-- Password: `review-access`
+Create an untracked `.env` from `.env.example`, set a unique
+`DLMM_REVIEW_PASSWORD` and a random `DLMM_SESSION_KEY`, then open
+`http://localhost:3000` and sign in as `reviewer@dlmm.local` with the
+password you configured. Review login remains disabled until configured.
+See [SECURITY_CREDENTIALS.md](SECURITY_CREDENTIALS.md) for Docker/PostgreSQL
+credential setup and existing database migration.
 
 The application uses its bundled review snapshot by default, so PostgreSQL is
 not required for the normal walkthrough.

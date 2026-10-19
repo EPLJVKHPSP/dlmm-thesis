@@ -6,7 +6,7 @@ import { databaseClient } from "./data-repository";
 
 const COOKIE = "dlmm_thesis_session";
 const REVIEW_EMAIL = "reviewer@dlmm.local";
-const REVIEW_PASSWORD = "review-access";
+const REVIEW_PASSWORD = process.env.DLMM_REVIEW_PASSWORD;
 
 export type Session = {
   id: string;
@@ -16,7 +16,11 @@ export type Session = {
 };
 
 function signingKey() {
-  return process.env.DLMM_SESSION_KEY || "local-review-key-not-for-live-use";
+  const key = process.env.DLMM_SESSION_KEY;
+  if (!key && process.env.NODE_ENV === "production") {
+    throw new Error("DLMM_SESSION_KEY must be configured in production");
+  }
+  return key || "local-review-key-not-for-live-use";
 }
 
 function signature(payload: string) {
@@ -35,15 +39,17 @@ export async function authenticate(email: string, password: string): Promise<Ses
   if (sql) {
     try {
       const rows = await sql`select id, email, password_hash, display_name, role from app_user where lower(email) = ${normalized} and active = true limit 1`;
-      if (rows.length && await bcrypt.compare(password, String(rows[0].password_hash))) {
-        return { id: String(rows[0].id), email: String(rows[0].email), name: String(rows[0].display_name), role: String(rows[0].role) };
+      if (rows.length) {
+        if (await bcrypt.compare(password, String(rows[0].password_hash))) {
+          return { id: String(rows[0].id), email: String(rows[0].email), name: String(rows[0].display_name), role: String(rows[0].role) };
+        }
+        return null;
       }
-      return null;
     } catch {
       // Local review mode falls back to the same public account.
     }
   }
-  if (!safeEqual(normalized, REVIEW_EMAIL) || !safeEqual(password, REVIEW_PASSWORD)) return null;
+  if (!REVIEW_PASSWORD || !safeEqual(normalized, REVIEW_EMAIL) || !safeEqual(password, REVIEW_PASSWORD)) return null;
   return { id: "REVIEWER-01", email: REVIEW_EMAIL, name: "Thesis Reviewer", role: "reviewer" };
 }
 
