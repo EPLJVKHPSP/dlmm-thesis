@@ -39,8 +39,8 @@ export async function sendTelegramMessage(text, { token, chatIds, fetchImpl = fe
         });
         if (response.ok) sent += 1;
         else failures.push(`${chatId}: ${response.status}`);
-      } catch (error) {
-        failures.push(`${chatId}: ${error instanceof Error ? error.message : "send failed"}`);
+      } catch {
+        failures.push(`${chatId}: request failed`);
       }
     }),
   );

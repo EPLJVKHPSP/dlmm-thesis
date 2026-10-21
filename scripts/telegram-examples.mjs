@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import "./load-env.mjs";
 import {
   formatTestAlert, formatDepegAlert,
   sendTelegramMessage, telegramConfig,

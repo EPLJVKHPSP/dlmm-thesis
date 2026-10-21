@@ -60,6 +60,18 @@ test("counts failures without throwing", async () => {
   assert.deepEqual(result.failures, ["22: 403"]);
 });
 
+test("network errors cannot disclose the bot URL or token", async () => {
+  const token = "test-only-token";
+  const result = await sendTelegramMessage("hello", {
+    token,
+    chatIds: ["11"],
+    fetchImpl: async (url) => { throw new Error(`Unable to reach ${url}`); },
+  });
+  assert.equal(result.sent, 0);
+  assert.deepEqual(result.failures, ["11: request failed"]);
+  assert.equal(JSON.stringify(result).includes(token), false);
+});
+
 test("depeg alert matches the production design", () => {
   assert.equal(
     formatDepegAlert({ symbol: "USDC", chain: "Ethereum", deviationPct: 3.8, basis: "$1.0000 peg", heldIn: "Aave V3 USDC lending (POS-001)", transition: "opened" }),

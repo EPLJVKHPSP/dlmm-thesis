@@ -24,7 +24,9 @@ only explains how to install, run, inspect, and verify the repository.
 From the repository root:
 
 ```bash
-npm install
+npm ci
+cp .env.example .env
+# Set your local values in .env before starting.
 npm run dev
 ```
 
@@ -108,13 +110,14 @@ Create a reviewer-owned bot:
 2. Copy the bot token.
 3. Open the new bot and press **Start**.
 4. Obtain the reviewer's chat ID, for example from `@userinfobot`.
-5. Supply the values through environment variables. Never save a real token in
-   the repository.
+5. Set `BOT_TOKEN` and `TELEGRAM_CHAT_IDS` in your untracked `.env`. The web
+   application and the standalone Telegram scripts load it automatically.
+   Process environment variables take precedence; keep credentials out of Git.
 
 Test the three documented example messages:
 
 ```bash
-BOT_TOKEN=<token> TELEGRAM_CHAT_IDS=<chat-id> npm run alert:examples
+npm run alert:examples
 ```
 
 The reviewer should receive, in order:
@@ -129,13 +132,13 @@ silent.
 Run one live held-asset check:
 
 ```bash
-BOT_TOKEN=<token> TELEGRAM_CHAT_IDS=<chat-id> npm run monitor:telegram:once
+npm run monitor:telegram:once
 ```
 
 Run continuous monitoring:
 
 ```bash
-BOT_TOKEN=<token> TELEGRAM_CHAT_IDS=<chat-id> npm run monitor:telegram
+npm run monitor:telegram
 ```
 
 The worker checks only held, non-demo assets. USDC and DAI are compared with
@@ -147,6 +150,12 @@ The default polling interval is 60 seconds. It can be changed with
 configured, the last monitoring state survives worker restarts.
 
 ## Run with Docker and PostgreSQL
+
+Set `DLMM_DB_PASSWORD` to a password for your own local database and
+`DLMM_DATABASE_URL` to the matching PostgreSQL connection URI in `.env`.
+Use `postgres` as the database host inside Compose and URL-encode special
+characters in the password. See [SECURITY_CREDENTIALS.md](SECURITY_CREDENTIALS.md)
+for the URI format and migration of existing database volumes.
 
 ```bash
 docker compose up --build
@@ -237,7 +246,7 @@ using credentials supplied by the reviewer.
 - **Telegram is silent:** confirm that the reviewer pressed Start in the bot,
   then check the chat ID and environment variables.
 - **The Telegram sender reports dormant:** set both `BOT_TOKEN` and
-  `TELEGRAM_CHAT_IDS` in the same terminal that starts the command.
+  `TELEGRAM_CHAT_IDS` in `.env`, then restart the command.
 - **The online historical replay is slow:** use
   `npm run episodes:depeg -- --offline` for the reproducible reviewer run.
 - **Dashboard totals differ in database mode:** confirm that the review seed was

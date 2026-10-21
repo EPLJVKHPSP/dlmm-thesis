@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import "./load-env.mjs";
 import postgres from "postgres";
 import { monitorHeldAssetsOnce } from "../src/lib/depeg-telegram-monitor.mjs";
 import { sendTelegramMessage, telegramConfig } from "../src/lib/telegram.mjs";

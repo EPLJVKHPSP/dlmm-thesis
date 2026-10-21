@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import "./load-env.mjs";
 import { formatTestAlert, sendTelegramMessage, telegramConfig } from "../src/lib/telegram.mjs";
 
 const config = telegramConfig();
